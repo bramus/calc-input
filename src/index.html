@@ -290,7 +290,7 @@ calc-input:focus-within {
   border-color: #2563eb;
 }
 
-calc-input:has(input:invalid) {
+calc-input:not(:focus-within):has(input:invalid) {
   border-color: #ef4444;
   background-color: #fef2f2;
 }</code></pre>

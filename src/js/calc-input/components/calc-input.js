@@ -48,18 +48,11 @@ const DEFAULT_CSS = `
     cursor: not-allowed;
   }
 
-  calc-input:has(input:invalid),
-  calc-input[data-invalid],
-  calc-input input:invalid {
+  calc-input:not(:focus-within):has(input:invalid),
+  calc-input[data-invalid]:not(:focus-within),
+  calc-input input:invalid:not(:focus) {
     border-color: #ef4444;
     background-color: #fef2f2;
-  }
-
-  calc-input:has(input:invalid):focus-within,
-  calc-input[data-invalid]:focus-within,
-  calc-input input:invalid:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
   }
 
   calc-input input {
@@ -243,8 +236,6 @@ export class CalcInput extends HTMLElement {
       }
     }
 
-    this._evaluateAndSync();
-
     // Determine initial focus state
     const activeEl = document.activeElement;
     this._isFocused = Boolean(
@@ -252,6 +243,8 @@ export class CalcInput extends HTMLElement {
       activeEl === this._formulaInput ||
       activeEl === this._resultInput
     );
+
+    this._evaluateAndSync();
 
     if (this.hasAttribute('autofocus') && !this.disabled) {
       this._focusFormulaInput(undefined, true);
@@ -468,14 +461,16 @@ export class CalcInput extends HTMLElement {
   }
 
   checkValidity() {
-    this._syncFromFormulaInput();
+    this._formula = this._formulaInput.value;
+    this._evaluateAndSync(true);
     return this._formulaInput.checkValidity();
   }
 
   reportValidity() {
-    this._syncFromFormulaInput();
+    this._formula = this._formulaInput.value;
+    this._evaluateAndSync(true);
     if (!this._isValid) {
-      this._showFormulaInput();
+      this._showFormulaInput(true);
     }
     return this._formulaInput.reportValidity();
   }
@@ -621,7 +616,13 @@ export class CalcInput extends HTMLElement {
     }
   }
 
-  _evaluateAndSync() {
+  _clearValidityState() {
+    this._formulaInput.setCustomValidity('');
+    this._formulaInput.removeAttribute('aria-invalid');
+    this.removeAttribute('data-invalid');
+  }
+
+  _evaluateAndSync(forceValidate = false) {
     const evaluation = evaluateFormula(this._formula);
     this._evaluation = evaluation;
     this._isValid = evaluation.isValid;
@@ -634,15 +635,14 @@ export class CalcInput extends HTMLElement {
     this._resultInput.value = this._result;
     this._syncMainInputValue();
 
-    // Update validity on _formulaInput to prevent form submission when invalid
-    if (!this._isValid) {
+    // Only apply validation when blurred (or when explicitly forced by checkValidity/reportValidity)
+    // so intermediate typing while focused (e.g. "2 + ") does not turn the input invalid/red.
+    if (!this._isValid && (!this._isFocused || forceValidate)) {
       this._formulaInput.setCustomValidity(evaluation.error || 'Invalid formula');
       this._formulaInput.setAttribute('aria-invalid', 'true');
       this.setAttribute('data-invalid', '');
     } else {
-      this._formulaInput.setCustomValidity('');
-      this._formulaInput.removeAttribute('aria-invalid');
-      this.removeAttribute('data-invalid');
+      this._clearValidityState();
     }
 
     // Ensure hidden inputs never block form submission with unfocusable validity errors
@@ -656,8 +656,11 @@ export class CalcInput extends HTMLElement {
     this._mainInput.value = useResult ? this._result : this._formula;
   }
 
-  _showFormulaInput() {
+  _showFormulaInput(keepValidity = false) {
     this._isFocused = true;
+    if (!keepValidity) {
+      this._clearValidityState();
+    }
     this._mainInput.hidden = true;
     this._formulaInput.hidden = false;
     this._resultInput.hidden = true;
@@ -669,6 +672,7 @@ export class CalcInput extends HTMLElement {
     this._isTransferringFocus = true;
     try {
       this._isFocused = true;
+      this._clearValidityState();
       this._mainInput.hidden = true;
       this._formulaInput.hidden = false;
       this._nativeFormulaFocus(options);

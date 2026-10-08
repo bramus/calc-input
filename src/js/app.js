@@ -132,10 +132,10 @@ export class CalcInputDemoApp {
     const isFocused = !this.playground.formulaInput.hidden && document.activeElement === this.playground.formulaInput;
 
     if (this.playgroundFocusBadge) {
-      if (!evaluation.isValid) {
-        this.playgroundFocusBadge.textContent = 'State: Invalid Formula (Keeping Formula Visible)';
-      } else if (isFocused) {
+      if (isFocused) {
         this.playgroundFocusBadge.textContent = 'State: Focused (Showing Formula Input)';
+      } else if (!evaluation.isValid) {
+        this.playgroundFocusBadge.textContent = 'State: Invalid Formula (Keeping Formula Visible)';
       } else {
         this.playgroundFocusBadge.textContent = 'State: Blurred (Showing Result Input)';
       }

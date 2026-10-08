@@ -325,9 +325,13 @@ describe('<calc-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)', (
       formulaInput.dispatchEvent(new Event('input', { bubbles: true }));
       const validBorderColor = getComputedStyle(formulaInput).borderColor;
 
-      // Enter unparsable formula "2 + " and blur
+      // Enter unparsable formula "2 + " while focused -> should NOT be invalid or red while focused
       formulaInput.value = '2 + ';
       formulaInput.dispatchEvent(new Event('input', { bubbles: true }));
+      const matchesInvalidWhileFocused = formulaInput.matches(':invalid');
+      const borderColorWhileFocused = getComputedStyle(formulaInput).borderColor;
+
+      // Blur -> now validation applies and marks it invalid
       formulaInput.blur();
 
       const isFormulaStillVisibleOnBlur = !formulaInput.hidden && resultInput.hidden;
@@ -357,6 +361,8 @@ describe('<calc-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)', (
 
       form.remove();
       return {
+        matchesInvalidWhileFocused,
+        borderColorWhileFocused,
         isFormulaStillVisibleOnBlur,
         shownValueOnBlur,
         validBorderColor,
@@ -372,6 +378,8 @@ describe('<calc-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)', (
       };
     });
 
+    assert.equal(result.matchesInvalidWhileFocused, false);
+    assert.equal(result.borderColorWhileFocused, result.validBorderColor);
     assert.equal(result.isFormulaStillVisibleOnBlur, true);
     assert.equal(result.shownValueOnBlur, '2 + ');
     assert.equal(result.matchesInvalidPseudo, true);
