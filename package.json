@@ -1,0 +1,49 @@
+{
+  "name": "formula-input",
+  "version": "1.0.0",
+  "description": "A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "prepublishOnly": "if [ -z $PUBLISH ]; then echo 'This package must be published using `npm run pub`\\n' && exit 1; fi",
+    "pub": "PUBLISH=true npm run build && npm publish ./dist",
+    "start": "npx -y serve src",
+    "dev": "npx -y serve src",
+    "deploy": "netlify deploy --dir=src --prod",
+    "deploy:preview": "netlify deploy --dir=src",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "node --test tests/unit/**/*.test.js",
+    "test:e2e": "node --test tests/e2e/**/*.test.js"
+  },
+  "keywords": [
+    "formula-input",
+    "custom-element",
+    "web-components",
+    "formula",
+    "calculator-input",
+    "math-input",
+    "form-input"
+  ],
+  "author": {
+    "name": "Bramus Van Damme",
+    "email": "bramus@bram.us",
+    "url": "https://www.bram.us/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bramus/formula-input.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bramus/formula-input/issues"
+  },
+  "homepage": "https://github.com/bramus/formula-input#readme",
+  "devDependencies": {
+    "puppeteer": "^25.11.0"
+  }
+}

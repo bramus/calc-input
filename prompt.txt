@@ -1,0 +1,19 @@
+In this folder, create a custom element named `<formula-input>`. It’s a type of input that accepts formulas such as `2 + 3`. Upon blurring the input, the field should show 5 as its value, and upon re-focusing it should show the formula that was entered again.
+
+Behind the scenes, inside the custom element, I want to use three inputs, so that form submissions can deal with it: `<formula-input name=size>` should result in `<input type=text name=size>`, `<input type=text name=size--formula>`, and `<input type=text name=size--result>` under the hood.
+
+- The `<input type=text name=size--formula>` should always contain the formula that was entered
+- The `<input type=text name=size--result>` should always contain the result of the formula
+- What `<input type=text name=size>` should contain is configurable through an attribute named `submit` on `formula-input`, defaulting to the `formula`. The over value is `result`.
+
+Upon focusing and blurring, you can probably get away with switching between showing the `--formula` or the `--result` input. The user should NEVER see more than one input at a time.
+
+The separator to use (the `--` in `name--formula`) used should be configurable through an attribute named `separator` on the `formula-input` field itself. An empty string is accepted. No attribute results in the default `--` being used.
+
+The component should also be able to deal with more complex formulas, such as `(2 + 3) * 4`.
+
+When the user has entered an unparsable formula (e.g. `2 + `), the input should keep showing the original formula when blurred, but should also have a certain styling (e.g. red border) to indicate that it's invalid. There should also be some JavaScript stuff that gets set to prevent the form with an invalid field from being submitted.
+
+It should be possible to set the initial value of the component using the `value` attribute. This `value` contains a formula and should be parsed as usual. So, if I do `<formula-input name=size value="2 + 3">`, the input should show `5` upon blur and `2 + 3` upon focus. Do not write back the value that is entered into the DOM.
+
+Include a demo site and tests. For this, as well as the folder structure and which dependencies to use, closely follow what the `rich-input` project did. You can find its source in `/Users/bramus/repos/projects/rich-input`.

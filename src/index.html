@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-syntax-theme="github">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element</title>
+  <meta name="description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://formula-input.netlify.app/">
+  <meta property="og:title" content="&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element">
+  <meta property="og:description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element">
+  <meta name="twitter:description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
+  <meta name="twitter:creator" content="@bramus">
+
+  <link rel="stylesheet" href="https://davatron5000.github.io/microlighter/microlighter/themes/github.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="https://davatron5000.github.io/microlighter/microlighter/micro-lighter-element.min.js"></script>
+  <script type="module" src="js/formula-input/index.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="title-group">
+          <h1><span class="title-tag">&lt;formula-input&gt;</span></h1>
+        </div>
+        <div class="header-actions">
+          <a href="https://github.com/bramus/formula-input" class="github-btn" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+            <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            <span>GitHub</span>
+          </a>
+          <a href="https://npmjs.com/package/formula-input" class="npm-btn" target="_blank" rel="noopener noreferrer" aria-label="View on npm">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z" />
+            </svg>
+            <span>npm</span>
+          </a>
+        </div>
+      </div>
+      <p class="description">
+        A custom input element that accepts mathematical formulas such as <code>2 + 3</code> or <code>(2 + 3) * 4</code>. Upon blurring, it displays the calculated result (e.g. <code>5</code> or <code>20</code>); upon re-focusing, it reveals the entered formula again. Under the hood, it maintains three synchronized <code>&lt;input type="text"&gt;</code> fields for effortless form submission.
+      </p>
+
+      <div id="api-banner" class="api-banner supported">
+        <span class="api-banner-badge">Ready</span>
+        <span><strong>Zero-Eval Recursive Descent Parser + Native Form Validation:</strong> Formulas are safely tokenized and evaluated without <code>eval()</code>, while unparsable expressions trigger native <code>setCustomValidity()</code> and <code>:invalid</code> styling.</span>
+      </div>
+    </header>
+
+    <div class="page-layout">
+      <!-- Sidenav / Scrollspy -->
+      <aside class="sidebar">
+        <nav class="sidenav" aria-label="Table of contents">
+          <div class="sidenav-title">Documentation</div>
+          <ul class="sidenav-list">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#features">Features &amp; Anatomy</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#under-the-hood">The 3 Underlying Inputs</a></li>
+            <li><a href="#configuration">Attributes &amp; Options</a></li>
+            <li><a href="#validation">Validation &amp; Styling</a></li>
+            <li><a href="#javascript-api">JavaScript API</a></li>
+            <li class="sidenav-divider">Examples</li>
+            <li><a href="#playground">1. 3-Inputs &amp; AST Inspector</a></li>
+            <li><a href="#example-form">2. Form Submission &amp; submit</a></li>
+            <li><a href="#example-separator">3. Custom separator</a></li>
+            <li><a href="#example-validation">4. Invalid Formula Handling</a></li>
+            <li><a href="#example-themes">5. Custom Themes</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Overview Section -->
+        <section id="overview">
+          <h2>Overview</h2>
+          <p class="section-desc">
+            Focus the input below to view or edit the formula (<code>(2 + 3) * 4</code>). When blurred, the field shows the calculated result (<code>20</code>). Only one input is visible to the user at any time.
+          </p>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Interactive Demo</span>
+              <span class="card-meta">&lt;formula-input name="size" value="(2 + 3) * 4"&gt;</span>
+            </div>
+
+            <formula-input
+              id="demo-formula"
+              name="size"
+              value="(2 + 3) * 4"
+              placeholder="Enter a formula, e.g. (2 + 3) * 4"
+              aria-label="Formula input demo"
+            ></formula-input>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.5rem;">Click a preset formula to load it (or focus the field to inspect the formula):</p>
+            <div class="preset-buttons" style="margin-top: 0.5rem; margin-bottom: 0;">
+              <button type="button" class="btn" data-preset="2 + 3">
+                ➕ Simple: 2 + 3
+              </button>
+              <button type="button" class="btn" data-preset="(2 + 3) * 4">
+                🧮 Grouped: (2 + 3) * 4
+              </button>
+              <button type="button" class="btn" data-preset="100 / (2 + 3) + 2 ^ 3">
+                ⚡ Powers &amp; Division: 100 / (2 + 3) + 2 ^ 3
+              </button>
+              <button type="button" class="btn" data-preset="sqrt(144) + max(5, 12) * 2">
+                📐 Functions: sqrt(144) + max(5, 12) * 2
+              </button>
+              <button type="button" class="btn" data-preset="2 + ">
+                ⚠️ Unparsable: 2 +
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Features & Anatomy Section -->
+        <section id="features">
+          <h2>Features &amp; Component Anatomy</h2>
+          <p class="section-desc">
+            <code>&lt;formula-input&gt;</code> wraps three standard <code>&lt;input type="text"&gt;</code> elements in Light DOM so native HTML <code>&lt;form&gt;</code> submissions and constraint validation work automatically.
+          </p>
+
+          <div class="card" style="padding: 1rem;">
+            <img src="assets/formula-input-anatomy.svg" alt="<formula-input> Component Anatomy showing the 3 underlying inputs" width="100%" style="display: block; border-radius: 6px;">
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>🔄 Focus / Blur Switching</h3>
+              <p>Shows the calculated result when blurred and seamlessly switches back to the original formula when focused. Never shows more than one input at a time.</p>
+            </div>
+            <div class="feature-card">
+              <h3>📦 Three Synced Inputs</h3>
+              <p>Automatically renders <code>name</code>, <code>name--formula</code>, and <code>name--result</code> inputs under the hood so form submissions receive both the formula and the result.</p>
+            </div>
+            <div class="feature-card">
+              <h3>⚙️ Configurable Submit &amp; Separator</h3>
+              <p>Choose whether the base <code>name</code> input holds the <code>formula</code> (default) or <code>result</code> via <code>submit="..."</code>, and customize the <code>--</code> separator via <code>separator="..."</code>.</p>
+            </div>
+            <div class="feature-card">
+              <h3>🛡️ Safe Expression Parser</h3>
+              <p>Evaluates arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>^</code>), nested parentheses, unary operators, and math functions without <code>eval()</code>.</p>
+            </div>
+            <div class="feature-card">
+              <h3>🚨 Native Form Validation</h3>
+              <p>Unparsable formulas (like <code>2 + </code>) keep showing the formula on blur, display a red invalid border, and call <code>setCustomValidity()</code> to block form submission.</p>
+            </div>
+            <div class="feature-card">
+              <h3>🔒 Clean DOM Attributes</h3>
+              <p>Initial formulas can be passed via the <code>value</code> attribute (e.g. <code>value="2 + 3"</code>) without ever writing user-entered values back into the DOM attributes.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Installation Section -->
+        <section id="installation">
+          <h2>Installation &amp; Quick Start</h2>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">1. Install via npm or Import</span>
+              <span class="card-meta">ESM</span>
+            </div>
+            <micro-lighter language="bash" controls="copy">
+              <pre><code>npm install formula-input</code></pre>
+            </micro-lighter>
+            <p style="margin-top: 1rem;">Import the package to register the <code>&lt;formula-input&gt;</code> custom element:</p>
+            <micro-lighter language="javascript" controls="copy">
+              <pre><code>import 'formula-input';</code></pre>
+            </micro-lighter>
+
+            <p style="margin-top: 1rem;">Then use <code>&lt;formula-input&gt;</code> anywhere in your HTML or forms:</p>
+            <micro-lighter language="html" controls="copy">
+              <pre><code>&lt;formula-input name="size" value="2 + 3"&gt;&lt;/formula-input&gt;</code></pre>
+            </micro-lighter>
+          </div>
+        </section>
+
+        <!-- Under the Hood Section -->
+        <section id="under-the-hood">
+          <h2>The 3 Underlying Inputs</h2>
+          <p class="section-desc">
+            Behind the scenes, <code>&lt;formula-input name="size" value="2 + 3"&gt;</code> creates three <code>&lt;input type="text"&gt;</code> elements inside the custom element:
+          </p>
+          <div class="card">
+            <micro-lighter language="html" controls="copy">
+              <pre><code>&lt;formula-input name="size" value="2 + 3"&gt;
+  &lt;!-- 1. Primary input: always hidden; value controlled by `submit` ("formula" or "result") --&gt;
+  &lt;input type="text" name="size" hidden&gt;
+
+  &lt;!-- 2. Formula input: always holds "2 + 3"; visible when focused (or when invalid) --&gt;
+  &lt;input type="text" name="size--formula" hidden&gt;
+
+  &lt;!-- 3. Result input: always holds "5"; visible when blurred (and valid) --&gt;
+  &lt;input type="text" name="size--result"&gt;
+&lt;/formula-input&gt;</code></pre>
+            </micro-lighter>
+            <div class="callout" style="margin-bottom: 0;">
+              <h3>Why Three Inputs?</h3>
+              <p>
+                When a parent <code>&lt;form&gt;</code> is submitted, <code>FormData</code> automatically receives <code>size</code> (either the formula or result depending on <code>submit</code>), <code>size--formula</code> (always the raw formula), and <code>size--result</code> (always the calculated result). At any given time, two of the inputs have the <code>hidden</code> attribute so the user only ever sees one input.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="configuration">
+          <h2>Attributes &amp; Configuration</h2>
+          <div class="card">
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>name</code></td>
+                    <td><code>""</code></td>
+                    <td>Base name used to generate the three inner inputs: <code>&lt;name&gt;</code>, <code>&lt;name&gt;&lt;separator&gt;formula</code>, and <code>&lt;name&gt;&lt;separator&gt;result</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>value</code></td>
+                    <td><code>""</code></td>
+                    <td>Initial formula string (e.g. <code>value="2 + 3"</code>). Parsed on load so the blurred input shows <code>5</code> and focusing shows <code>2 + 3</code>. User edits update live input properties without writing back to the DOM attribute.</td>
+                  </tr>
+                  <tr>
+                    <td><code>submit</code></td>
+                    <td><code>"formula"</code></td>
+                    <td>Configures what the primary <code>&lt;input type="text" name="&lt;name&gt;"&gt;</code> contains. Accepts <code>"formula"</code> or <code>"result"</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>separator</code></td>
+                    <td><code>"--"</code></td>
+                    <td>Configures the separator between <code>&lt;name&gt;</code> and <code>formula</code> / <code>result</code>. An empty string (<code>separator=""</code>) is accepted (producing e.g. <code>sizeformula</code> and <code>sizeresult</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code>placeholder</code></td>
+                    <td><code>""</code></td>
+                    <td>Placeholder text forwarded to the visible inner inputs.</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabled</code> / <code>readonly</code> / <code>required</code></td>
+                    <td><code>false</code></td>
+                    <td>Standard form control states forwarded to the underlying inputs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Validation Section -->
+        <section id="validation">
+          <h2>Validation &amp; Invalid Formula Styling</h2>
+          <p class="section-desc">
+            When an unparsable formula is entered (such as <code>2 + </code> or <code>(2 + 3</code>), blurring the field keeps showing the original formula instead of switching to the result input, applies invalid styling (red border), and sets custom validity via <code>setCustomValidity()</code> to prevent form submission.
+          </p>
+          <div class="card">
+            <micro-lighter language="css" controls="copy">
+              <pre><code>/* Customize invalid and focus appearance using CSS Custom Properties */
+formula-input {
+  --fi-input-border: #d1d5db;
+  --fi-primary: #2563eb;
+  --fi-invalid-color: #ef4444;
+  --fi-invalid-bg: #fef2f2;
+}</code></pre>
+            </micro-lighter>
+          </div>
+        </section>
+
+        <!-- JavaScript API Section -->
+        <section id="javascript-api">
+          <h2>JavaScript API</h2>
+          <div class="card">
+            <micro-lighter language="javascript" controls="copy">
+              <pre><code>const el = document.querySelector('formula-input');
+
+// Read formula, evaluated result, and configured submit value
+console.log(el.formula); // "2 + 3"
+console.log(el.result);  // "5"
+console.log(el.value);   // "2 + 3" (when submit="formula") or "5" (when submit="result")
+console.log(el.isValid); // true
+
+// Inspect structured AST & tokens
+console.log(el.getEvaluation());
+
+// Check constraint validity
+console.log(el.checkValidity());</code></pre>
+            </micro-lighter>
+          </div>
+        </section>
+
+        <!-- Example 1: Playground Inspector -->
+        <section id="playground">
+          <h2>1. Live 3-Inputs &amp; AST Inspector</h2>
+          <p class="section-desc">
+            Type a formula, focus and blur the input, and watch how the three underlying <code>&lt;input type="text"&gt;</code> elements update in real time without mutating the <code>value</code> attribute in the DOM.
+          </p>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Inspector Playground</span>
+              <span class="card-meta" id="playground-focus-badge">State: Blurred (Showing Result)</span>
+            </div>
+
+            <formula-input
+              id="playground-input"
+              name="calc"
+              value="(2 + 3) * 4"
+              placeholder="Type a formula..."
+              aria-label="Playground formula input"
+            ></formula-input>
+
+            <!-- Live 3-Input State Cards -->
+            <div id="playground-inputs-grid" class="inputs-breakdown-grid"></div>
+
+            <div class="playground-layout">
+              <div>
+                <h4 style="font-size: 0.875rem; margin-bottom: 0.5rem;">Parsed Tokens &amp; DOM Attribute Check:</h4>
+                <div id="playground-tokens" class="inspector-box" style="min-height: 120px;"></div>
+              </div>
+              <div>
+                <h4 style="font-size: 0.875rem; margin-bottom: 0.5rem;">Evaluation &amp; AST (<code>el.getEvaluation()</code>):</h4>
+                <pre id="playground-json" class="inspector-box"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Example 2: Form Integration -->
+        <section id="example-form">
+          <h2>2. Form Submission &amp; <code>submit</code> Attribute</h2>
+          <p class="section-desc">
+            Compare default <code>submit="formula"</code> against <code>submit="result"</code> in a real <code>&lt;form&gt;</code>. Submitting inspects <code>new FormData(form)</code> showing all six submitted entries across both components. Try entering an invalid formula like <code>2 + </code> and clicking Submit to see native constraint validation prevent submission.
+          </p>
+
+          <div class="card">
+            <form id="demo-form" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div>
+                <label for="form-width" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
+                  Width (<code>name="width"</code> — default <code>submit="formula"</code>)
+                </label>
+                <formula-input id="form-width" name="width" value="2 + 3"></formula-input>
+              </div>
+
+              <div>
+                <label for="form-height" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
+                  Height (<code>name="height" submit="result"</code>)
+                </label>
+                <formula-input id="form-height" name="height" submit="result" value="(2 + 3) * 4"></formula-input>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary">Submit Form</button>
+                <button type="reset" class="btn">Reset Form</button>
+                <button type="button" class="btn" id="btn-set-invalid-form">Set Width to Invalid ("2 + ")</button>
+              </div>
+            </form>
+
+            <div id="form-result" class="callout" hidden style="margin-top: 1.25rem; margin-bottom: 0;"></div>
+          </div>
+        </section>
+
+        <!-- Example 3: Custom Separator -->
+        <section id="example-separator">
+          <h2>3. Custom <code>separator</code> Attribute</h2>
+          <p class="section-desc">
+            The separator between <code>name</code> and <code>formula</code> / <code>result</code> defaults to <code>--</code>, and can be customized via the <code>separator</code> attribute (including an empty string <code>separator=""</code>).
+          </p>
+
+          <div class="card">
+            <div class="syntax-config-grid">
+              <div class="syntax-config-box">
+                <div class="syntax-config-header">
+                  <strong>Separator (<code>separator="..."</code>)</strong>
+                </div>
+                <p class="syntax-config-desc">Click a separator option to update the component dynamically:</p>
+                <div class="syntax-chip-list" id="separator-chips">
+                  <button type="button" class="syntax-chip is-active" data-sep="--">"--" (default)</button>
+                  <button type="button" class="syntax-chip" data-sep="_">"_"</button>
+                  <button type="button" class="syntax-chip" data-sep=":">":"</button>
+                  <button type="button" class="syntax-chip" data-sep="">"" (empty string)</button>
+                </div>
+              </div>
+
+              <div class="syntax-config-box">
+                <div class="syntax-config-header">
+                  <strong>Submit Mode (<code>submit="..."</code>)</strong>
+                </div>
+                <p class="syntax-config-desc">Configure what the primary <code>name="price"</code> input holds:</p>
+                <div class="syntax-chip-list" id="submit-chips">
+                  <button type="button" class="syntax-chip is-active" data-submit="formula">submit="formula"</button>
+                  <button type="button" class="syntax-chip" data-submit="result">submit="result"</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <formula-input id="separator-demo-input" name="price" value="19.99 * 3"></formula-input>
+            </div>
+
+            <div id="separator-inputs-grid" class="inputs-breakdown-grid"></div>
+          </div>
+        </section>
+
+        <!-- Example 4: Invalid Formula Handling -->
+        <section id="example-validation">
+          <h2>4. Invalid Formula Handling</h2>
+          <p class="section-desc">
+            When the user enters an unparsable formula (e.g. <code>2 + </code>), the component keeps displaying the original formula when blurred, highlights the input with a red border, and sets <code>setCustomValidity()</code> so its form cannot be submitted.
+          </p>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Invalid Formula State</span>
+              <span class="card-meta">&lt;formula-input name="broken" value="2 + "&gt;</span>
+            </div>
+            <formula-input id="invalid-demo-input" name="broken" value="2 + " aria-label="Invalid formula demo"></formula-input>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">
+              Notice that even though the input above is blurred, it still displays <code>2 + </code> with a red border. Focus it and type <code>3</code> at the end (making it <code>2 + 3</code>), then blur to see it resolve to <code>5</code>!
+            </p>
+          </div>
+        </section>
+
+        <!-- Example 5: Custom Themes -->
+        <section id="example-themes">
+          <h2>5. Custom Styling &amp; Themes</h2>
+          <p class="section-desc">
+            Customize <code>&lt;formula-input&gt;</code> using CSS custom properties (<code>--fi-*</code>) or standard CSS selectors.
+          </p>
+
+          <div class="card">
+            <div style="display: grid; gap: 1.25rem;">
+              <div>
+                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Pill Theme (<code>.theme-pill</code>)</label>
+                <formula-input class="theme-pill" name="theme_pill" value="12 * 12" aria-label="Pill theme formula input"></formula-input>
+              </div>
+              <div>
+                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Terminal Theme (<code>.theme-terminal</code>)</label>
+                <formula-input class="theme-terminal" name="theme_terminal" value="(1024 / 16) * 8" aria-label="Terminal theme formula input"></formula-input>
+              </div>
+              <div>
+                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Spreadsheet Cell Theme (<code>.theme-spreadsheet</code>)</label>
+                <formula-input class="theme-spreadsheet" name="theme_sheet" value="(250 + 750) * 1.21" aria-label="Spreadsheet theme formula input"></formula-input>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+
+</html>
