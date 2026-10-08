@@ -42,7 +42,7 @@
   "bugs": {
     "url": "https://github.com/bramus/calc-input/issues"
   },
-  "homepage": "https://github.com/bramus/calc-input#readme",
+  "homepage": "https://calc-input.netlify.app/",
   "devDependencies": {
     "puppeteer": "^25.11.0"
   }

@@ -4,6 +4,8 @@ A custom input element that accepts mathematical formulas (such as `2 + 3` or `(
 
 Behind the scenes, `<calc-input name="size">` renders three `<input type="text">` elements (`name="size"`, `name="size--formula"`, and `name="size--result"`) so standard HTML `<form>` submissions and constraint validation work seamlessly out of the box.
 
+👉 **Live Demo & Documentation:** [https://calc-input.netlify.app](https://calc-input.netlify.app)
+
 ---
 
 ## Features
