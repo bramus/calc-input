@@ -9,10 +9,7 @@ Behind the scenes, `<formula-input name="size">` renders three `<input type="tex
 ## Features
 
 - **Focus / Blur Formula Switching**: Shows the evaluated result on blur and restores the formula on focus. The user never sees more than one input at a time.
-- **Three Synchronized Inputs Under the Hood**: `<formula-input name="size">` creates:
-  - `<input type="text" name="size">` — contains either the `formula` (default) or `result`, configurable via `submit="formula|result|formula-only|result-only"`.
-  - `<input type="text" name="size--formula">` — always contains the entered formula (omitted from submission when `submit="formula-only"` or `submit="result-only"`).
-  - `<input type="text" name="size--result">` — always contains the calculated result (omitted from submission when `submit="formula-only"` or `submit="result-only"`).
+- **Configurable Form Submission**: Control what gets sent to the server via the `submit` attribute: send only the formula (`submit="formula-only"`), only the result (`submit="result-only"`), or all values (`submit="formula"` or `submit="result"`, with your preferred format in the original `<name>` input).
 - **Configurable Separator**: Customize the `--` separator in `name--formula` and `name--result` using the `separator` attribute (e.g. `separator="_"` or `separator=""`).
 - **Complex Formula Support**: Evaluates `+`, `-`, `*`, `/`, `%`, `^` / `**`, nested parentheses `(2 + 3) * 4`, unary operators, decimals, scientific notation, and standard math functions (`sqrt`, `abs`, `round`, `min`, `max`, `pow`, etc.) using a safe recursive-descent parser without `eval()`.
 - **Invalid Formula Handling & Native Form Validation**: When an unparsable formula is entered (e.g. `2 + `), blurring keeps showing the original formula with invalid styling (red border) and sets `setCustomValidity()` to prevent form submission.

@@ -140,12 +140,12 @@
               <p>Shows the calculated result when blurred and seamlessly switches back to the original formula when focused. Never shows more than one input at a time.</p>
             </div>
             <div class="feature-card">
-              <h3>📦 Three Synced Inputs</h3>
-              <p>Automatically renders <code>name</code>, <code>name--formula</code>, and <code>name--result</code> inputs under the hood so form submissions receive both the formula and the result.</p>
+              <h3>📦 Configurable Form Submission</h3>
+              <p>Control what gets sent to the server via <code>submit</code>: send only the formula (<code>formula-only</code>), only the result (<code>result-only</code>), or all values (<code>formula</code> or <code>result</code>, with your preferred format in the original input).</p>
             </div>
             <div class="feature-card">
-              <h3>⚙️ Configurable Submit &amp; Separator</h3>
-              <p>Choose whether the base <code>name</code> input holds the <code>formula</code> (default) or <code>result</code> via <code>submit="..."</code>, and customize the <code>--</code> separator via <code>separator="..."</code>.</p>
+              <h3>⚙️ Configurable Separator</h3>
+              <p>Customize the <code>--</code> separator used in <code>name--formula</code> and <code>name--result</code> via <code>separator="..."</code> (including an empty string <code>separator=""</code>).</p>
             </div>
             <div class="feature-card">
               <h3>🛡️ Safe Expression Parser</h3>
@@ -194,7 +194,7 @@
           <div class="card">
             <micro-lighter language="html" controls="copy">
               <pre><code>&lt;formula-input name="size" value="2 + 3"&gt;
-  &lt;!-- 1. Primary input: always hidden; value controlled by `submit` ("formula" or "result") --&gt;
+  &lt;!-- 1. Primary input: always hidden; value controlled by `submit` ("formula", "result", "formula-only", or "result-only") --&gt;
   &lt;input type="text" name="size" hidden&gt;
 
   &lt;!-- 2. Formula input: always holds "2 + 3"; visible when focused (or when invalid) --&gt;
@@ -208,6 +208,9 @@
               <h3>Why Three Inputs?</h3>
               <p>
                 When a parent <code>&lt;form&gt;</code> is submitted, <code>FormData</code> automatically receives <code>size</code> (either the formula or result depending on <code>submit</code>), <code>size--formula</code> (always the raw formula), and <code>size--result</code> (always the calculated result). At any given time, two of the inputs have the <code>hidden</code> attribute so the user only ever sees one input.
+              </p>
+              <p style="margin-top: 0.65rem;">
+                <strong>Controlling what gets submitted:</strong> You can configure what gets sent to the server using the <code>submit</code> attribute. Set <code>submit="formula"</code> (default) or <code>submit="result"</code> to submit all three fields (with your preferred format in <code>size</code>), or set <code>submit="formula-only"</code> / <code>submit="result-only"</code> to omit the <code>name</code> attribute from the <code>--formula</code> and <code>--result</code> inputs so only the primary <code>size</code> field is submitted.
               </p>
             </div>
           </div>
@@ -470,7 +473,7 @@ console.log(el.checkValidity());</code></pre>
           <div class="card">
             <div class="card-header">
               <span class="card-title">Custom Border, Radius &amp; Padding</span>
-              <span class="card-meta">Direct Inline Styles</span>
+              <span class="card-meta">CSS</span>
             </div>
             <formula-input
               name="custom_border"
@@ -478,19 +481,19 @@ console.log(el.checkValidity());</code></pre>
               aria-label="Custom border and radius formula input"
               style="border: 2px solid #3b82f6; border-radius: 9999px; padding: 0.625rem 1.25rem;"
             ></formula-input>
-            <micro-lighter language="html" controls="copy">
-              <pre><code>&lt;formula-input
-  name="custom_border"
-  value="12 * 12"
-  style="border: 2px solid #3b82f6; border-radius: 9999px; padding: 0.625rem 1.25rem;"
-&gt;&lt;/formula-input&gt;</code></pre>
+            <micro-lighter language="css" controls="copy">
+              <pre><code>formula-input {
+  border: 2px solid #3b82f6;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+}</code></pre>
             </micro-lighter>
           </div>
 
           <div class="card">
             <div class="card-header">
               <span class="card-title">Custom Background, Color &amp; Monospace Font</span>
-              <span class="card-meta">Direct Inline Styles</span>
+              <span class="card-meta">CSS</span>
             </div>
             <formula-input
               name="custom_colors"
@@ -498,19 +501,21 @@ console.log(el.checkValidity());</code></pre>
               aria-label="Custom background and color formula input"
               style="background-color: #0f172a; color: #4ade80; border: 1px solid #22c55e; border-radius: 4px; font-family: monospace;"
             ></formula-input>
-            <micro-lighter language="html" controls="copy">
-              <pre><code>&lt;formula-input
-  name="custom_colors"
-  value="(1024 / 16) * 8"
-  style="background-color: #0f172a; color: #4ade80; border: 1px solid #22c55e; border-radius: 4px; font-family: monospace;"
-&gt;&lt;/formula-input&gt;</code></pre>
+            <micro-lighter language="css" controls="copy">
+              <pre><code>formula-input {
+  background-color: #0f172a;
+  color: #4ade80;
+  border: 1px solid #22c55e;
+  border-radius: 4px;
+  font-family: monospace;
+}</code></pre>
             </micro-lighter>
           </div>
 
           <div class="card">
             <div class="card-header">
               <span class="card-title">Custom Typography, Alignment &amp; Width</span>
-              <span class="card-meta">Direct Inline Styles</span>
+              <span class="card-meta">CSS</span>
             </div>
             <formula-input
               name="custom_typography"
@@ -518,12 +523,16 @@ console.log(el.checkValidity());</code></pre>
               aria-label="Custom typography and alignment formula input"
               style="font-size: 1.25rem; font-weight: 700; text-align: right; width: 240px; border: 2px solid #059669; border-radius: 2px; font-family: monospace;"
             ></formula-input>
-            <micro-lighter language="html" controls="copy">
-              <pre><code>&lt;formula-input
-  name="custom_typography"
-  value="(250 + 750) * 1.21"
-  style="font-size: 1.25rem; font-weight: 700; text-align: right; width: 240px; border: 2px solid #059669; border-radius: 2px; font-family: monospace;"
-&gt;&lt;/formula-input&gt;</code></pre>
+            <micro-lighter language="css" controls="copy">
+              <pre><code>formula-input {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: right;
+  width: 240px;
+  border: 2px solid #059669;
+  border-radius: 2px;
+  font-family: monospace;
+}</code></pre>
             </micro-lighter>
           </div>
         </section>
