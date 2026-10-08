@@ -1,7 +1,7 @@
 {
   "name": "calc-input",
   "version": "1.0.0",
-  "description": "A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission",
+  "description": "A custom input element that accepts mathematical formulas",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
