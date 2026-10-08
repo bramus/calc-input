@@ -1,6 +1,6 @@
 {
   "name": "calc-input",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A custom input element that accepts mathematical formulas",
   "type": "module",
   "main": "./dist/index.js",
