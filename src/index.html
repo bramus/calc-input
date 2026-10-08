@@ -127,8 +127,11 @@
             <code>&lt;formula-input&gt;</code> wraps three standard <code>&lt;input type="text"&gt;</code> elements in Light DOM so native HTML <code>&lt;form&gt;</code> submissions and constraint validation work automatically.
           </p>
 
-          <div class="card" style="padding: 1rem;">
-            <img src="assets/formula-input-anatomy.svg" alt="<formula-input> Component Anatomy showing the 3 underlying inputs" width="100%" style="display: block; border-radius: 6px;">
+          <div class="card">
+            <pre style="margin-top: 0;"><code>&lt;formula-input name="size" value="2 + 3"&gt;
+├─ &lt;input type="text" name="size" hidden&gt;
+├─ &lt;input type="text" name="size--formula" hidden&gt;
+└─ &lt;input type="text" name="size--result"&gt;</code></pre>
           </div>
 
           <div class="feature-grid">

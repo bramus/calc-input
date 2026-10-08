@@ -22,9 +22,12 @@ Behind the scenes, `<formula-input name="size">` renders three `<input type="tex
 
 ## Component Anatomy
 
-<p align="center">
-  <img src="assets/formula-input-anatomy.svg" alt="<formula-input> Component Anatomy" width="100%">
-</p>
+```text
+<formula-input name="size" value="2 + 3">
+├─ <input type="text" name="size" hidden>
+├─ <input type="text" name="size--formula" hidden>
+└─ <input type="text" name="size--result">
+```
 
 ---
 
