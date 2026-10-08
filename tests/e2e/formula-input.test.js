@@ -501,4 +501,81 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(resetState.afterResetFormula, '2 + 3');
     assert.equal(resetState.afterResetResult, '5');
   });
+
+  it('reveals and focuses the --formula input with focus styling when tabbing (Tab / Shift+Tab) into and out of <formula-input>', async () => {
+    // Focus the link immediately preceding #demo-formula
+    await page.evaluate(() => {
+      document.querySelector('#demo-formula').formula = '(2 + 3) * 4';
+      document.querySelector('#demo-formula').blur();
+      document.querySelector('a[href="#example-themes"]').focus();
+    });
+
+    // Press Tab to enter #demo-formula
+    await page.keyboard.press('Tab');
+
+    const afterTabIn = await page.evaluate(() => {
+      const demo = document.querySelector('#demo-formula');
+      const active = document.activeElement;
+      const cs = getComputedStyle(demo.formulaInput);
+      return {
+        activeName: active?.getAttribute('name'),
+        formulaHidden: demo.formulaInput.hidden,
+        resultHidden: demo.resultInput.hidden,
+        mainHidden: demo.mainInput.hidden,
+        visibleValue: demo.querySelector('input:not([hidden])')?.value,
+        borderColor: cs.borderColor,
+        boxShadow: cs.boxShadow,
+      };
+    });
+
+    assert.equal(afterTabIn.activeName, 'size--formula');
+    assert.equal(afterTabIn.formulaHidden, false);
+    assert.equal(afterTabIn.resultHidden, true);
+    assert.equal(afterTabIn.mainHidden, true);
+    assert.equal(afterTabIn.visibleValue, '(2 + 3) * 4');
+    assert.equal(afterTabIn.borderColor, 'rgb(37, 99, 235)');
+    assert.notEqual(afterTabIn.boxShadow, 'none');
+
+    // Press Tab again to exit #demo-formula to the first preset button
+    await page.keyboard.press('Tab');
+
+    const afterTabOut = await page.evaluate(() => {
+      const demo = document.querySelector('#demo-formula');
+      const active = document.activeElement;
+      return {
+        activeTag: active?.tagName,
+        activePreset: active?.getAttribute('data-preset'),
+        formulaHidden: demo.formulaInput.hidden,
+        resultHidden: demo.resultInput.hidden,
+        visibleValue: demo.querySelector('input:not([hidden])')?.value,
+      };
+    });
+
+    assert.equal(afterTabOut.activeTag, 'BUTTON');
+    assert.equal(afterTabOut.activePreset, '2 + 3');
+    assert.equal(afterTabOut.formulaHidden, true);
+    assert.equal(afterTabOut.resultHidden, false);
+    assert.equal(afterTabOut.visibleValue, '20');
+
+    // Press Shift+Tab to re-enter #demo-formula backwards
+    await page.keyboard.down('Shift');
+    await page.keyboard.press('Tab');
+    await page.keyboard.up('Shift');
+
+    const afterShiftTabIn = await page.evaluate(() => {
+      const demo = document.querySelector('#demo-formula');
+      const active = document.activeElement;
+      return {
+        activeName: active?.getAttribute('name'),
+        formulaHidden: demo.formulaInput.hidden,
+        resultHidden: demo.resultInput.hidden,
+        visibleValue: demo.querySelector('input:not([hidden])')?.value,
+      };
+    });
+
+    assert.equal(afterShiftTabIn.activeName, 'size--formula');
+    assert.equal(afterShiftTabIn.formulaHidden, false);
+    assert.equal(afterShiftTabIn.resultHidden, true);
+    assert.equal(afterShiftTabIn.visibleValue, '(2 + 3) * 4');
+  });
 });

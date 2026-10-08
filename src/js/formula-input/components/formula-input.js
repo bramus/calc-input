@@ -28,6 +28,7 @@ const DEFAULT_CSS = `
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
+    outline: none;
   }
 
   formula-input[hidden],
@@ -78,7 +79,8 @@ const DEFAULT_CSS = `
     opacity: inherit;
     cursor: inherit;
     box-sizing: inherit;
-    outline: none;
+    outline: inherit;
+    outline-offset: inherit;
     transition: box-shadow 0.15s ease;
   }
 
@@ -165,6 +167,7 @@ export class FormulaInput extends HTMLElement {
     this._mainInput = document.createElement('input');
     this._mainInput.setAttribute('type', 'text');
     this._mainInput.hidden = true;
+    this._mainInput.tabIndex = -1;
 
     this._formulaInput = document.createElement('input');
     this._formulaInput.setAttribute('type', 'text');
@@ -180,15 +183,11 @@ export class FormulaInput extends HTMLElement {
     this._nativeResultFocus = nativeResultFocus;
 
     this._formulaInput.focus = (options) => {
-      if (this.disabled) return;
-      this._showFormulaInput();
-      nativeFormulaFocus(options);
+      this._focusFormulaInput(options, false);
     };
 
     this._resultInput.focus = (options) => {
-      if (this.disabled) return;
-      this._showFormulaInput();
-      nativeFormulaFocus(options);
+      this._focusFormulaInput(options, false);
     };
 
     this._formula = '';
@@ -197,6 +196,7 @@ export class FormulaInput extends HTMLElement {
     this._evaluation = evaluateFormula('');
     this._isFocused = false;
     this._isHandlingBlur = false;
+    this._isTransferringFocus = false;
     this._initialized = false;
     this._boundForm = null;
 
@@ -254,10 +254,9 @@ export class FormulaInput extends HTMLElement {
     );
 
     if (this.hasAttribute('autofocus') && !this.disabled) {
-      this._showFormulaInput();
-      this._nativeFormulaFocus();
+      this._focusFormulaInput(undefined, true);
     } else if (this._isFocused) {
-      this._showFormulaInput();
+      this._focusFormulaInput(undefined, false);
     } else {
       this._updateVisibilityForBlurredState();
     }
@@ -492,13 +491,7 @@ export class FormulaInput extends HTMLElement {
   }
 
   focus(options) {
-    if (this.disabled) return;
-    this._showFormulaInput();
-    this._nativeFormulaFocus(options);
-    const len = this._formulaInput.value.length;
-    try {
-      this._formulaInput.setSelectionRange(len, len);
-    } catch (e) {}
+    this._focusFormulaInput(options, true);
   }
 
   blur() {
@@ -509,8 +502,7 @@ export class FormulaInput extends HTMLElement {
 
   select() {
     if (this.disabled) return;
-    this._showFormulaInput();
-    this._nativeFormulaFocus();
+    this._focusFormulaInput(undefined, false);
     this._formulaInput.select();
   }
 
@@ -657,6 +649,27 @@ export class FormulaInput extends HTMLElement {
     this._syncRequiredState();
   }
 
+  _focusFormulaInput(options, moveCaretToEnd = false) {
+    if (this.disabled) return;
+    this._isTransferringFocus = true;
+    try {
+      this._isFocused = true;
+      this._mainInput.hidden = true;
+      this._formulaInput.hidden = false;
+      this._nativeFormulaFocus(options);
+      this._resultInput.hidden = true;
+      this._syncRequiredState();
+      if (moveCaretToEnd) {
+        const len = this._formulaInput.value.length;
+        try {
+          this._formulaInput.setSelectionRange(len, len);
+        } catch (err) {}
+      }
+    } finally {
+      this._isTransferringFocus = false;
+    }
+  }
+
   _updateVisibilityForBlurredState() {
     this._mainInput.hidden = true;
     if (this._isValid) {
@@ -691,27 +704,21 @@ export class FormulaInput extends HTMLElement {
   _onResultMouseDown(e) {
     if (this.disabled) return;
     e.preventDefault();
-    this._showFormulaInput();
-    this._nativeFormulaFocus();
-    const len = this._formulaInput.value.length;
-    try {
-      this._formulaInput.setSelectionRange(len, len);
-    } catch (err) {}
+    this._focusFormulaInput(undefined, true);
   }
 
   _onResultFocus() {
     if (this.disabled) return;
-    this._showFormulaInput();
-    this._nativeFormulaFocus();
-    const len = this._formulaInput.value.length;
-    try {
-      this._formulaInput.setSelectionRange(len, len);
-    } catch (err) {}
+    this._focusFormulaInput(undefined, true);
   }
 
-  _onResultBlur() {
+  _onResultBlur(e) {
     // Ignore blur caused by immediate focus handoff to _formulaInput
-    if (document.activeElement === this._formulaInput) {
+    if (
+      this._isTransferringFocus ||
+      e?.relatedTarget === this._formulaInput ||
+      document.activeElement === this._formulaInput
+    ) {
       return;
     }
     this._handleBlurTransition();
@@ -719,8 +726,7 @@ export class FormulaInput extends HTMLElement {
 
   _onHostFocus(e) {
     if (e.target === this && !this.disabled) {
-      this._showFormulaInput();
-      this._nativeFormulaFocus();
+      this._focusFormulaInput(undefined, true);
     }
   }
 
