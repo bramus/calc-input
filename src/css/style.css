@@ -44,10 +44,10 @@ body {
 /*
  * ==========================================================================
  * PRE-UPGRADE STYLING (FALLBACK)
- * Applied to <formula-input> before the Custom Element is defined in the browser.
+ * Applied to <calc-input> before the Custom Element is defined in the browser.
  * ==========================================================================
  */
-formula-input:not(:defined) {
+calc-input:not(:defined) {
   display: block;
   font-family: var(--font-sans);
   background-color: var(--bg-surface);
@@ -344,7 +344,7 @@ section p.section-desc {
   box-shadow: var(--card-shadow-lg);
 }
 
-.card > p + formula-input {
+.card > p + calc-input {
   margin-top: 0.75rem;
 }
 

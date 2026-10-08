@@ -10,9 +10,9 @@ import {
   parseFormulaToAST,
   evaluateAST,
   evaluateFormula,
-} from '../../src/js/formula-input/utils/formula-parser.js';
+} from '../../src/js/calc-input/utils/calc-parser.js';
 
-describe('formula-parser unit tests', () => {
+describe('calc-parser unit tests', () => {
   describe('normalizeSeparator()', () => {
     it('returns default separator "--" when null or undefined', () => {
       assert.equal(normalizeSeparator(undefined), DEFAULT_SEPARATOR);

@@ -1,8 +1,8 @@
-# `<formula-input>`
+# `<calc-input>`
 
 A custom input element that accepts mathematical formulas (such as `2 + 3` or `(2 + 3) * 4`). Upon blurring the input, the field displays the calculated result (`5` or `20`), and upon re-focusing it shows the original formula again.
 
-Behind the scenes, `<formula-input name="size">` renders three `<input type="text">` elements (`name="size"`, `name="size--formula"`, and `name="size--result"`) so standard HTML `<form>` submissions and constraint validation work seamlessly out of the box.
+Behind the scenes, `<calc-input name="size">` renders three `<input type="text">` elements (`name="size"`, `name="size--formula"`, and `name="size--result"`) so standard HTML `<form>` submissions and constraint validation work seamlessly out of the box.
 
 ---
 
@@ -13,14 +13,14 @@ Behind the scenes, `<formula-input name="size">` renders three `<input type="tex
 - **Configurable Separator**: Customize the `--` separator in `name--formula` and `name--result` using the `separator` attribute (e.g. `separator="_"` or `separator=""`).
 - **Complex Formula Support**: Evaluates `+`, `-`, `*`, `/`, `%`, `^` / `**`, nested parentheses `(2 + 3) * 4`, unary operators, decimals, scientific notation, and standard math functions (`sqrt`, `abs`, `round`, `min`, `max`, `pow`, etc.) using a safe recursive-descent parser without `eval()`.
 - **Invalid Formula Handling & Native Form Validation**: When an unparsable formula is entered (e.g. `2 + `), blurring keeps showing the original formula with invalid styling (red border) and sets `setCustomValidity()` to prevent form submission.
-- **Clean DOM Attributes**: Set an initial formula via the `value` attribute (e.g. `<formula-input name="size" value="2 + 3">`) without writing user-entered values back into the DOM attributes.
+- **Clean DOM Attributes**: Set an initial formula via the `value` attribute (e.g. `<calc-input name="size" value="2 + 3">`) without writing user-entered values back into the DOM attributes.
 
 ---
 
 ## Component Anatomy
 
 ```text
-<formula-input name="size" value="2 + 3">
+<calc-input name="size" value="2 + 3">
 ├─ <input type="text" name="size" hidden>
 ├─ <input type="text" name="size--formula" hidden>
 └─ <input type="text" name="size--result">
@@ -33,16 +33,16 @@ Behind the scenes, `<formula-input name="size">` renders three `<input type="tex
 ### 1. Installation
 
 ```bash
-npm install formula-input
+npm install calc-input
 ```
 
 ### 2. Usage
 
 ```html
-<script type="module" src="formula-input"></script>
+<script type="module" src="calc-input"></script>
 
 <form>
-  <formula-input name="size" value="2 + 3"></formula-input>
+  <calc-input name="size" value="2 + 3"></calc-input>
   <button type="submit">Submit</button>
 </form>
 ```

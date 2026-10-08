@@ -1,5 +1,5 @@
 {
-  "name": "formula-input",
+  "name": "calc-input",
   "version": "1.0.0",
   "description": "A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission",
   "type": "module",
@@ -21,7 +21,7 @@
     "test:e2e": "node --test tests/e2e/**/*.test.js"
   },
   "keywords": [
-    "formula-input",
+    "calc-input",
     "custom-element",
     "web-components",
     "formula",
@@ -37,12 +37,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bramus/formula-input.git"
+    "url": "git+https://github.com/bramus/calc-input.git"
   },
   "bugs": {
-    "url": "https://github.com/bramus/formula-input/issues"
+    "url": "https://github.com/bramus/calc-input/issues"
   },
-  "homepage": "https://github.com/bramus/formula-input#readme",
+  "homepage": "https://github.com/bramus/calc-input#readme",
   "devDependencies": {
     "puppeteer": "^25.11.0"
   }

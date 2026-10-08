@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
-const srcPackageDir = path.join(rootDir, 'src', 'js', 'formula-input');
+const srcPackageDir = path.join(rootDir, 'src', 'js', 'calc-input');
 const distDir = path.join(rootDir, 'dist');
 const assetsDir = path.join(rootDir, 'assets');
 

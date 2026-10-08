@@ -56,7 +56,7 @@ function startStaticServer(rootDir) {
   });
 }
 
-describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)', () => {
+describe('<calc-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)', () => {
   let serverInfo;
   let browser;
   let page;
@@ -82,7 +82,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
 
   it('creates three <input type="text"> elements under the hood with default "--" separator and shows only one input at a time', async () => {
     const state = await page.evaluate(() => {
-      const el = document.createElement('formula-input');
+      const el = document.createElement('calc-input');
       el.setAttribute('name', 'size');
       document.body.appendChild(el);
 
@@ -99,7 +99,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
 
       el.remove();
       return {
-        isDefined: Boolean(customElements.get('formula-input')),
+        isDefined: Boolean(customElements.get('calc-input')),
         inputCount: inputs.length,
         visibleCount: visibleInputs.length,
         details,
@@ -118,7 +118,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
 
   it('evaluates simple and complex formulas, showing result on blur and formula on focus without ever showing more than one input', async () => {
     const result = await page.evaluate(() => {
-      const el = document.createElement('formula-input');
+      const el = document.createElement('calc-input');
       el.setAttribute('name', 'size');
       document.body.appendChild(el);
 
@@ -204,18 +204,18 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     const result = await page.evaluate(() => {
       const form = document.createElement('form');
       form.innerHTML = `
-        <formula-input name="defaultSubmit" value="2 + 3"></formula-input>
-        <formula-input name="explicitFormula" submit="formula" value="2 + 3"></formula-input>
-        <formula-input name="explicitResult" submit="result" value="(2 + 3) * 4"></formula-input>
-        <formula-input name="formulaOnly" submit="formula-only" value="10 + 5"></formula-input>
-        <formula-input name="resultOnly" submit="result-only" value="6 * 7"></formula-input>
+        <calc-input name="defaultSubmit" value="2 + 3"></calc-input>
+        <calc-input name="explicitFormula" submit="formula" value="2 + 3"></calc-input>
+        <calc-input name="explicitResult" submit="result" value="(2 + 3) * 4"></calc-input>
+        <calc-input name="formulaOnly" submit="formula-only" value="10 + 5"></calc-input>
+        <calc-input name="resultOnly" submit="result-only" value="6 * 7"></calc-input>
       `;
       document.body.appendChild(form);
 
       const fd = Object.fromEntries(new FormData(form).entries());
 
-      const formulaOnlyEl = form.querySelector('formula-input[name="formulaOnly"]');
-      const resultOnlyEl = form.querySelector('formula-input[name="resultOnly"]');
+      const formulaOnlyEl = form.querySelector('calc-input[name="formulaOnly"]');
+      const resultOnlyEl = form.querySelector('calc-input[name="resultOnly"]');
       const formulaOnlyInputNames = Array.from(formulaOnlyEl.querySelectorAll('input')).map((i) =>
         i.getAttribute('name')
       );
@@ -224,7 +224,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
       );
 
       // Also test dynamic switching of `submit` attribute
-      const firstEl = form.querySelector('formula-input[name="defaultSubmit"]');
+      const firstEl = form.querySelector('calc-input[name="defaultSubmit"]');
       firstEl.setAttribute('submit', 'result-only');
       const afterSwitchToResultOnly = {
         value: firstEl.value,
@@ -278,9 +278,9 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     const result = await page.evaluate(() => {
       const container = document.createElement('div');
       container.innerHTML = `
-        <formula-input id="sep-default" name="size" value="2 + 3"></formula-input>
-        <formula-input id="sep-custom" name="size" separator="_" value="2 + 3"></formula-input>
-        <formula-input id="sep-empty" name="size" separator="" value="2 + 3"></formula-input>
+        <calc-input id="sep-default" name="size" value="2 + 3"></calc-input>
+        <calc-input id="sep-custom" name="size" separator="_" value="2 + 3"></calc-input>
+        <calc-input id="sep-empty" name="size" separator="" value="2 + 3"></calc-input>
       `;
       document.body.appendChild(container);
 
@@ -305,7 +305,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
   it('keeps showing the original formula when blurred if unparsable, applies invalid styling, and prevents form submission', async () => {
     const result = await page.evaluate(() => {
       const form = document.createElement('form');
-      const el = document.createElement('formula-input');
+      const el = document.createElement('calc-input');
       el.setAttribute('name', 'size');
       form.appendChild(el);
       document.body.appendChild(form);
@@ -390,10 +390,10 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
   it('parses the initial value attribute and does NOT write entered values back into the DOM', async () => {
     const result = await page.evaluate(() => {
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = `<formula-input name="size" value="2 + 3"></formula-input>`;
+      wrapper.innerHTML = `<calc-input name="size" value="2 + 3"></calc-input>`;
       document.body.appendChild(wrapper);
 
-      const el = wrapper.querySelector('formula-input');
+      const el = wrapper.querySelector('calc-input');
       const mainInput = el.querySelector('input[name="size"]');
       const formulaInput = el.querySelector('input[name="size--formula"]');
       const resultInput = el.querySelector('input[name="size--result"]');
@@ -419,7 +419,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
       const resultInputValueAttr = resultInput.getAttribute('value');
 
       // Also test an element with NO initial value attribute
-      const elNoAttr = document.createElement('formula-input');
+      const elNoAttr = document.createElement('calc-input');
       elNoAttr.setAttribute('name', 'qty');
       document.body.appendChild(elNoAttr);
       const qtyFormulaInput = elNoAttr.querySelector('input[name="qty--formula"]');
@@ -457,7 +457,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(result.noAttrHostHasValueAttr, false);
   });
 
-  it('supports real mouse clicks, keyboard typing, form reset, and direct CSS inheritance from <formula-input> to inner inputs', async () => {
+  it('supports real mouse clicks, keyboard typing, form reset, and direct CSS inheritance from <calc-input> to inner inputs', async () => {
     // Click on the visible input inside #demo-formula, clear, type a new formula, and click outside to blur
     await page.click('#demo-formula input:not([hidden])');
 
@@ -502,9 +502,9 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(blurredState.resultValue, '4');
     assert.equal(blurredState.domValueAttr, '(2 + 3) * 4');
 
-    // Test that styles applied directly onto <formula-input> apply to the <input> elements inside it
+    // Test that styles applied directly onto <calc-input> apply to the <input> elements inside it
     const inheritedStyles = await page.evaluate(() => {
-      const styledEl = document.querySelector('formula-input[name="custom_border"]');
+      const styledEl = document.querySelector('calc-input[name="custom_border"]');
       const styledInput = styledEl.querySelector('input:not([hidden])');
       const cs = getComputedStyle(styledInput);
       return {
@@ -541,7 +541,7 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(resetState.afterResetResult, '5');
   });
 
-  it('reveals and focuses the --formula input with focus styling when tabbing (Tab / Shift+Tab) into and out of <formula-input>', async () => {
+  it('reveals and focuses the --formula input with focus styling when tabbing (Tab / Shift+Tab) into and out of <calc-input>', async () => {
     // Focus the link immediately preceding #demo-formula
     await page.evaluate(() => {
       document.querySelector('#demo-formula').formula = '(2 + 3) * 4';

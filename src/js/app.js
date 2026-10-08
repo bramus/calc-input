@@ -1,10 +1,10 @@
 /**
- * <formula-input> Demo Application Controller
+ * <calc-input> Demo Application Controller
  */
 
-import './formula-input/index.js';
+import './calc-input/index.js';
 
-export class FormulaInputDemoApp {
+export class CalcInputDemoApp {
   constructor() {
     this.demoFormula = document.getElementById('demo-formula');
     this.playground = document.getElementById('playground-input');
@@ -36,7 +36,7 @@ export class FormulaInputDemoApp {
       btn.addEventListener('click', () => {
         const formula = btn.getAttribute('data-preset') ?? '';
         const target =
-          btn.closest('.card')?.querySelector('formula-input') ||
+          btn.closest('.card')?.querySelector('calc-input') ||
           this.demoFormula ||
           this.playground;
         if (target) {
@@ -358,8 +358,8 @@ export class FormulaInputDemoApp {
 // Auto-instantiate on DOM load
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new FormulaInputDemoApp());
+    document.addEventListener('DOMContentLoaded', () => new CalcInputDemoApp());
   } else {
-    new FormulaInputDemoApp();
+    new CalcInputDemoApp();
   }
 }

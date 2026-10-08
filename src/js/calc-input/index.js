@@ -1,9 +1,9 @@
 /**
- * <formula-input> Entry Point
- * Registers the <formula-input> custom element and exports public utilities.
+ * <calc-input> Entry Point
+ * Registers the <calc-input> custom element and exports public utilities.
  */
 
-import { FormulaInput } from './components/formula-input.js';
+import { CalcInput } from './components/calc-input.js';
 import {
   DEFAULT_SEPARATOR,
   DEFAULT_SUBMIT,
@@ -17,10 +17,10 @@ import {
   parseFormulaToAST,
   evaluateAST,
   evaluateFormula,
-} from './utils/formula-parser.js';
+} from './utils/calc-parser.js';
 
 export {
-  FormulaInput,
+  CalcInput,
   DEFAULT_SEPARATOR,
   DEFAULT_SUBMIT,
   VALID_SUBMIT_MODES,
@@ -35,4 +35,4 @@ export {
   evaluateFormula,
 };
 
-export default FormulaInput;
+export default CalcInput;

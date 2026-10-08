@@ -4,25 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element</title>
+  <title>&lt;calc-input&gt; – A Formula-Evaluating Input Custom Element</title>
   <meta name="description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://formula-input.netlify.app/">
-  <meta property="og:title" content="&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element">
+  <meta property="og:url" content="https://calc-input.netlify.app/">
+  <meta property="og:title" content="&lt;calc-input&gt; – A Formula-Evaluating Input Custom Element">
   <meta property="og:description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="&lt;formula-input&gt; – A Formula-Evaluating Input Custom Element">
+  <meta name="twitter:title" content="&lt;calc-input&gt; – A Formula-Evaluating Input Custom Element">
   <meta name="twitter:description" content="A custom input element that accepts mathematical formulas, displays the calculated result on blur, and reveals the formula on focus while syncing three underlying inputs for form submission">
   <meta name="twitter:creator" content="@bramus">
 
   <link rel="stylesheet" href="https://davatron5000.github.io/microlighter/microlighter/themes/github.css">
   <link rel="stylesheet" href="css/style.css">
   <script type="module" src="https://davatron5000.github.io/microlighter/microlighter/micro-lighter-element.min.js"></script>
-  <script type="module" src="js/formula-input/index.js"></script>
+  <script type="module" src="js/calc-input/index.js"></script>
   <script type="module" src="js/app.js"></script>
 </head>
 
@@ -31,16 +31,16 @@
     <header>
       <div class="header-top">
         <div class="title-group">
-          <h1><span class="title-tag">&lt;formula-input&gt;</span></h1>
+          <h1><span class="title-tag">&lt;calc-input&gt;</span></h1>
         </div>
         <div class="header-actions">
-          <a href="https://github.com/bramus/formula-input" class="github-btn" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+          <a href="https://github.com/bramus/calc-input" class="github-btn" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
             <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
             </svg>
             <span>GitHub</span>
           </a>
-          <a href="https://npmjs.com/package/formula-input" class="npm-btn" target="_blank" rel="noopener noreferrer" aria-label="View on npm">
+          <a href="https://npmjs.com/package/calc-input" class="npm-btn" target="_blank" rel="noopener noreferrer" aria-label="View on npm">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
               <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z" />
             </svg>
@@ -88,16 +88,16 @@
           <div class="card">
             <div class="card-header">
               <span class="card-title">Interactive Demo</span>
-              <span class="card-meta">&lt;formula-input name="size" value="(2 + 3) * 4"&gt;</span>
+              <span class="card-meta">&lt;calc-input name="size" value="(2 + 3) * 4"&gt;</span>
             </div>
 
-            <formula-input
+            <calc-input
               id="demo-formula"
               name="size"
               value="(2 + 3) * 4"
               placeholder="Enter a formula, e.g. (2 + 3) * 4"
               aria-label="Formula input demo"
-            ></formula-input>
+            ></calc-input>
 
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.5rem;">Click a preset formula to load it (or focus the field to inspect the formula):</p>
             <div class="preset-buttons" style="margin-top: 0.5rem; margin-bottom: 0;">
@@ -124,11 +124,11 @@
         <section id="features">
           <h2>Features &amp; Component Anatomy</h2>
           <p class="section-desc">
-            <code>&lt;formula-input&gt;</code> wraps three standard <code>&lt;input type="text"&gt;</code> elements in Light DOM so native HTML <code>&lt;form&gt;</code> submissions and constraint validation work automatically.
+            <code>&lt;calc-input&gt;</code> wraps three standard <code>&lt;input type="text"&gt;</code> elements in Light DOM so native HTML <code>&lt;form&gt;</code> submissions and constraint validation work automatically.
           </p>
 
           <div class="card">
-            <pre style="margin-top: 0;"><code>&lt;formula-input name="size" value="2 + 3"&gt;
+            <pre style="margin-top: 0;"><code>&lt;calc-input name="size" value="2 + 3"&gt;
 ├─ &lt;input type="text" name="size" hidden&gt;
 ├─ &lt;input type="text" name="size--formula" hidden&gt;
 └─ &lt;input type="text" name="size--result"&gt;</code></pre>
@@ -171,16 +171,16 @@
               <span class="card-meta">ESM</span>
             </div>
             <micro-lighter language="bash" controls="copy">
-              <pre><code>npm install formula-input</code></pre>
+              <pre><code>npm install calc-input</code></pre>
             </micro-lighter>
-            <p style="margin-top: 1rem;">Import the package to register the <code>&lt;formula-input&gt;</code> custom element:</p>
+            <p style="margin-top: 1rem;">Import the package to register the <code>&lt;calc-input&gt;</code> custom element:</p>
             <micro-lighter language="javascript" controls="copy">
-              <pre><code>import 'formula-input';</code></pre>
+              <pre><code>import 'calc-input';</code></pre>
             </micro-lighter>
 
-            <p style="margin-top: 1rem;">Then use <code>&lt;formula-input&gt;</code> anywhere in your HTML or forms:</p>
+            <p style="margin-top: 1rem;">Then use <code>&lt;calc-input&gt;</code> anywhere in your HTML or forms:</p>
             <micro-lighter language="html" controls="copy">
-              <pre><code>&lt;formula-input name="size" value="2 + 3"&gt;&lt;/formula-input&gt;</code></pre>
+              <pre><code>&lt;calc-input name="size" value="2 + 3"&gt;&lt;/calc-input&gt;</code></pre>
             </micro-lighter>
           </div>
         </section>
@@ -189,11 +189,11 @@
         <section id="under-the-hood">
           <h2>The 3 Underlying Inputs</h2>
           <p class="section-desc">
-            Behind the scenes, <code>&lt;formula-input name="size" value="2 + 3"&gt;</code> creates three <code>&lt;input type="text"&gt;</code> elements inside the custom element:
+            Behind the scenes, <code>&lt;calc-input name="size" value="2 + 3"&gt;</code> creates three <code>&lt;input type="text"&gt;</code> elements inside the custom element:
           </p>
           <div class="card">
             <micro-lighter language="html" controls="copy">
-              <pre><code>&lt;formula-input name="size" value="2 + 3"&gt;
+              <pre><code>&lt;calc-input name="size" value="2 + 3"&gt;
   &lt;!-- 1. Primary input: always hidden; value controlled by `submit` ("formula", "result", "formula-only", or "result-only") --&gt;
   &lt;input type="text" name="size" hidden&gt;
 
@@ -202,7 +202,7 @@
 
   &lt;!-- 3. Result input: always holds "5"; visible when blurred (and valid) --&gt;
   &lt;input type="text" name="size--result"&gt;
-&lt;/formula-input&gt;</code></pre>
+&lt;/calc-input&gt;</code></pre>
             </micro-lighter>
             <div class="callout" style="margin-bottom: 0;">
               <h3>Why Three Inputs?</h3>
@@ -270,22 +270,22 @@
         <section id="validation">
           <h2>Validation &amp; Direct CSS Styling</h2>
           <p class="section-desc">
-            When an unparsable formula is entered (such as <code>2 + </code> or <code>(2 + 3</code>), blurring the field keeps showing the original formula instead of switching to the result input, applies invalid styling (red border), and sets custom validity via <code>setCustomValidity()</code> to prevent form submission. Because <code>&lt;formula-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography properties (<code>border: inherit</code>, <code>padding: inherit</code>, <code>background: inherit</code>, <code>border-radius: inherit</code>, etc.), any styles applied directly onto <code>&lt;formula-input&gt;</code> automatically apply to the inputs inside it.
+            When an unparsable formula is entered (such as <code>2 + </code> or <code>(2 + 3</code>), blurring the field keeps showing the original formula instead of switching to the result input, applies invalid styling (red border), and sets custom validity via <code>setCustomValidity()</code> to prevent form submission. Because <code>&lt;calc-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography properties (<code>border: inherit</code>, <code>padding: inherit</code>, <code>background: inherit</code>, <code>border-radius: inherit</code>, etc.), any styles applied directly onto <code>&lt;calc-input&gt;</code> automatically apply to the inputs inside it.
           </p>
           <div class="card">
             <micro-lighter language="css" controls="copy">
-              <pre><code>/* Styles applied directly onto formula-input are inherited by its inner inputs */
-formula-input {
+              <pre><code>/* Styles applied directly onto calc-input are inherited by its inner inputs */
+calc-input {
   border: 1px solid #d1d5db;
   border-radius: 8px;
   padding: 0.625rem 0.75rem;
 }
 
-formula-input:focus-within {
+calc-input:focus-within {
   border-color: #2563eb;
 }
 
-formula-input:has(input:invalid) {
+calc-input:has(input:invalid) {
   border-color: #ef4444;
   background-color: #fef2f2;
 }</code></pre>
@@ -298,7 +298,7 @@ formula-input:has(input:invalid) {
           <h2>JavaScript API</h2>
           <div class="card">
             <micro-lighter language="javascript" controls="copy">
-              <pre><code>const el = document.querySelector('formula-input');
+              <pre><code>const el = document.querySelector('calc-input');
 
 // Read formula, evaluated result, and configured submit value
 console.log(el.formula); // "2 + 3"
@@ -328,13 +328,13 @@ console.log(el.checkValidity());</code></pre>
               <span class="card-meta" id="playground-focus-badge">State: Blurred (Showing Result)</span>
             </div>
 
-            <formula-input
+            <calc-input
               id="playground-input"
               name="calc"
               value="(2 + 3) * 4"
               placeholder="Type a formula..."
               aria-label="Playground formula input"
-            ></formula-input>
+            ></calc-input>
 
             <!-- Live 3-Input State Cards -->
             <div id="playground-inputs-grid" class="inputs-breakdown-grid"></div>
@@ -365,28 +365,28 @@ console.log(el.checkValidity());</code></pre>
                 <label for="form-width" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
                   Width (<code>name="width"</code> — default <code>submit="formula"</code>)
                 </label>
-                <formula-input id="form-width" name="width" value="2 + 3"></formula-input>
+                <calc-input id="form-width" name="width" value="2 + 3"></calc-input>
               </div>
 
               <div>
                 <label for="form-height" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
                   Height (<code>name="height" submit="result"</code>)
                 </label>
-                <formula-input id="form-height" name="height" submit="result" value="(2 + 3) * 4"></formula-input>
+                <calc-input id="form-height" name="height" submit="result" value="(2 + 3) * 4"></calc-input>
               </div>
 
               <div>
                 <label for="form-depth" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
                   Depth (<code>name="depth" submit="formula-only"</code> — omits <code>--formula</code> and <code>--result</code>)
                 </label>
-                <formula-input id="form-depth" name="depth" submit="formula-only" value="10 + 5"></formula-input>
+                <calc-input id="form-depth" name="depth" submit="formula-only" value="10 + 5"></calc-input>
               </div>
 
               <div>
                 <label for="form-area" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
                   Area (<code>name="area" submit="result-only"</code> — omits <code>--formula</code> and <code>--result</code>)
                 </label>
-                <formula-input id="form-area" name="area" submit="result-only" value="6 * 7"></formula-input>
+                <calc-input id="form-area" name="area" submit="result-only" value="6 * 7"></calc-input>
               </div>
 
               <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -437,7 +437,7 @@ console.log(el.checkValidity());</code></pre>
             </div>
 
             <div style="margin-top: 1rem;">
-              <formula-input id="separator-demo-input" name="price" value="19.99 * 3"></formula-input>
+              <calc-input id="separator-demo-input" name="price" value="19.99 * 3"></calc-input>
             </div>
 
             <div id="separator-inputs-grid" class="inputs-breakdown-grid"></div>
@@ -454,9 +454,9 @@ console.log(el.checkValidity());</code></pre>
           <div class="card">
             <div class="card-header">
               <span class="card-title">Invalid Formula State</span>
-              <span class="card-meta">&lt;formula-input name="broken" value="2 + "&gt;</span>
+              <span class="card-meta">&lt;calc-input name="broken" value="2 + "&gt;</span>
             </div>
-            <formula-input id="invalid-demo-input" name="broken" value="2 + " aria-label="Invalid formula demo"></formula-input>
+            <calc-input id="invalid-demo-input" name="broken" value="2 + " aria-label="Invalid formula demo"></calc-input>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">
               Notice that even though the input above is blurred, it still displays <code>2 + </code> with a red border. Focus it and type <code>3</code> at the end (making it <code>2 + 3</code>), then blur to see it resolve to <code>5</code>!
             </p>
@@ -467,7 +467,7 @@ console.log(el.checkValidity());</code></pre>
         <section id="example-themes">
           <h2>5. Custom Styling</h2>
           <p class="section-desc">
-            Because <code>&lt;formula-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography styles, you can apply CSS properties directly onto <code>&lt;formula-input&gt;</code> and they automatically apply to the inputs inside it.
+            Because <code>&lt;calc-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography styles, you can apply CSS properties directly onto <code>&lt;calc-input&gt;</code> and they automatically apply to the inputs inside it.
           </p>
 
           <div class="card">
@@ -475,14 +475,14 @@ console.log(el.checkValidity());</code></pre>
               <span class="card-title">Custom Border, Radius &amp; Padding</span>
               <span class="card-meta">CSS</span>
             </div>
-            <formula-input
+            <calc-input
               name="custom_border"
               value="12 * 12"
               aria-label="Custom border and radius formula input"
               style="border: 2px solid #3b82f6; border-radius: 9999px; padding: 0.625rem 1.25rem;"
-            ></formula-input>
+            ></calc-input>
             <micro-lighter language="css" controls="copy">
-              <pre><code>formula-input {
+              <pre><code>calc-input {
   border: 2px solid #3b82f6;
   border-radius: 9999px;
   padding: 0.625rem 1.25rem;
@@ -495,14 +495,14 @@ console.log(el.checkValidity());</code></pre>
               <span class="card-title">Custom Background, Color &amp; Monospace Font</span>
               <span class="card-meta">CSS</span>
             </div>
-            <formula-input
+            <calc-input
               name="custom_colors"
               value="(1024 / 16) * 8"
               aria-label="Custom background and color formula input"
               style="background-color: #0f172a; color: #4ade80; border: 1px solid #22c55e; border-radius: 4px; font-family: monospace;"
-            ></formula-input>
+            ></calc-input>
             <micro-lighter language="css" controls="copy">
-              <pre><code>formula-input {
+              <pre><code>calc-input {
   background-color: #0f172a;
   color: #4ade80;
   border: 1px solid #22c55e;
@@ -517,14 +517,14 @@ console.log(el.checkValidity());</code></pre>
               <span class="card-title">Custom Typography, Alignment &amp; Width</span>
               <span class="card-meta">CSS</span>
             </div>
-            <formula-input
+            <calc-input
               name="custom_typography"
               value="(250 + 750) * 1.21"
               aria-label="Custom typography and alignment formula input"
               style="font-size: 1.25rem; font-weight: 700; text-align: right; width: 240px; border: 2px solid #059669; border-radius: 2px; font-family: monospace;"
-            ></formula-input>
+            ></calc-input>
             <micro-lighter language="css" controls="copy">
-              <pre><code>formula-input {
+              <pre><code>calc-input {
   font-size: 1.25rem;
   font-weight: 700;
   text-align: right;

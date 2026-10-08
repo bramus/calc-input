@@ -1,5 +1,5 @@
 /**
- * <formula-input> Custom Element
+ * <calc-input> Custom Element
  * An input field that accepts mathematical formulas, shows the evaluated result on blur,
  * and shows the formula on focus while maintaining three underlying <input type="text">
  * elements for seamless form submission.
@@ -11,12 +11,12 @@ import {
   normalizeSeparator,
   normalizeSubmit,
   evaluateFormula,
-} from '../utils/formula-parser.js';
+} from '../utils/calc-parser.js';
 
-const STYLE_ID = 'formula-input-default-styles';
+const STYLE_ID = 'calc-input-default-styles';
 
 const DEFAULT_CSS = `
-  formula-input {
+  calc-input {
     display: contents;
     font-family: inherit;
     font-size: 0.95rem;
@@ -31,38 +31,38 @@ const DEFAULT_CSS = `
     outline: none;
   }
 
-  formula-input[hidden],
-  formula-input input[hidden] {
+  calc-input[hidden],
+  calc-input input[hidden] {
     display: none !important;
   }
 
-  formula-input:focus-within {
+  calc-input:focus-within {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
   }
 
-  formula-input[disabled] {
+  calc-input[disabled] {
     background-color: #f3f4f6;
     border-color: #e5e7eb;
     opacity: 0.7;
     cursor: not-allowed;
   }
 
-  formula-input:has(input:invalid),
-  formula-input[data-invalid],
-  formula-input input:invalid {
+  calc-input:has(input:invalid),
+  calc-input[data-invalid],
+  calc-input input:invalid {
     border-color: #ef4444;
     background-color: #fef2f2;
   }
 
-  formula-input:has(input:invalid):focus-within,
-  formula-input[data-invalid]:focus-within,
-  formula-input input:invalid:focus {
+  calc-input:has(input:invalid):focus-within,
+  calc-input[data-invalid]:focus-within,
+  calc-input input:invalid:focus {
     border-color: #ef4444;
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
   }
 
-  formula-input input {
+  calc-input input {
     display: block;
     width: inherit;
     min-width: 0;
@@ -84,7 +84,7 @@ const DEFAULT_CSS = `
     transition: box-shadow 0.15s ease;
   }
 
-  formula-input input::placeholder {
+  calc-input input::placeholder {
     color: #9ca3af;
   }
 `;
@@ -102,47 +102,47 @@ function ensureDefaultStyles(rootNode) {
   }
 }
 
-export class FormulaInput extends HTMLElement {
+export class CalcInput extends HTMLElement {
   static _globalSeparator = DEFAULT_SEPARATOR;
   static _globalSubmit = DEFAULT_SUBMIT;
 
   /**
-   * Global default separator inherited by <formula-input> instances without a `separator` attribute.
+   * Global default separator inherited by <calc-input> instances without a `separator` attribute.
    */
   static get separator() {
-    return FormulaInput._globalSeparator;
+    return CalcInput._globalSeparator;
   }
 
   static set separator(val) {
-    FormulaInput._globalSeparator = normalizeSeparator(val);
+    CalcInput._globalSeparator = normalizeSeparator(val);
   }
 
   static get defaultSeparator() {
-    return FormulaInput.separator;
+    return CalcInput.separator;
   }
 
   static set defaultSeparator(val) {
-    FormulaInput.separator = val;
+    CalcInput.separator = val;
   }
 
   /**
-   * Global default submit mode ("formula" or "result") inherited by <formula-input> instances
+   * Global default submit mode ("formula" or "result") inherited by <calc-input> instances
    * without a `submit` attribute.
    */
   static get submit() {
-    return FormulaInput._globalSubmit;
+    return CalcInput._globalSubmit;
   }
 
   static set submit(val) {
-    FormulaInput._globalSubmit = normalizeSubmit(val);
+    CalcInput._globalSubmit = normalizeSubmit(val);
   }
 
   static get defaultSubmit() {
-    return FormulaInput.submit;
+    return CalcInput.submit;
   }
 
   static set defaultSubmit(val) {
-    FormulaInput.submit = val;
+    CalcInput.submit = val;
   }
 
   static get observedAttributes() {
@@ -337,7 +337,7 @@ export class FormulaInput extends HTMLElement {
     if (this.hasAttribute('separator')) {
       return this.getAttribute('separator') ?? '';
     }
-    return FormulaInput.separator;
+    return CalcInput.separator;
   }
 
   set separator(val) {
@@ -355,7 +355,7 @@ export class FormulaInput extends HTMLElement {
     if (this.hasAttribute('submit')) {
       return normalizeSubmit(this.getAttribute('submit'));
     }
-    return FormulaInput.submit;
+    return CalcInput.submit;
   }
 
   set submit(val) {
@@ -765,8 +765,8 @@ export class FormulaInput extends HTMLElement {
   }
 }
 
-if (typeof customElements !== 'undefined' && !customElements.get('formula-input')) {
-  customElements.define('formula-input', FormulaInput);
+if (typeof customElements !== 'undefined' && !customElements.get('calc-input')) {
+  customElements.define('calc-input', CalcInput);
 }
 
-export default FormulaInput;
+export default CalcInput;
