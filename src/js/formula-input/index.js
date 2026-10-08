@@ -7,6 +7,7 @@ import { FormulaInput } from './components/formula-input.js';
 import {
   DEFAULT_SEPARATOR,
   DEFAULT_SUBMIT,
+  VALID_SUBMIT_MODES,
   MATH_CONSTANTS,
   MATH_FUNCTIONS,
   normalizeSeparator,
@@ -22,6 +23,7 @@ export {
   FormulaInput,
   DEFAULT_SEPARATOR,
   DEFAULT_SUBMIT,
+  VALID_SUBMIT_MODES,
   MATH_CONSTANTS,
   MATH_FUNCTIONS,
   normalizeSeparator,

@@ -288,6 +288,7 @@ export class FormulaInput extends HTMLElement {
         break;
 
       case 'submit':
+        this._syncNames();
         this._syncMainInputValue();
         break;
 
@@ -348,7 +349,7 @@ export class FormulaInput extends HTMLElement {
   }
 
   /**
-   * Submit mode getter/setter ("formula" or "result"). Defaults to "formula".
+   * Submit mode getter/setter ("formula", "result", "formula-only", or "result-only"). Defaults to "formula".
    */
   get submit() {
     if (this.hasAttribute('submit')) {
@@ -536,15 +537,27 @@ export class FormulaInput extends HTMLElement {
   _syncNames() {
     const baseName = this.getAttribute('name');
     const sep = this.separator;
+    const submitMode = this.submit;
+    const isOnlyMode = submitMode === 'formula-only' || submitMode === 'result-only';
 
     if (baseName !== null && baseName !== '') {
       this._mainInput.setAttribute('name', baseName);
-      this._formulaInput.setAttribute('name', `${baseName}${sep}formula`);
-      this._resultInput.setAttribute('name', `${baseName}${sep}result`);
+      if (isOnlyMode) {
+        this._formulaInput.removeAttribute('name');
+        this._resultInput.removeAttribute('name');
+      } else {
+        this._formulaInput.setAttribute('name', `${baseName}${sep}formula`);
+        this._resultInput.setAttribute('name', `${baseName}${sep}result`);
+      }
     } else if (baseName === '') {
       this._mainInput.setAttribute('name', '');
-      this._formulaInput.setAttribute('name', `${sep}formula`);
-      this._resultInput.setAttribute('name', `${sep}result`);
+      if (isOnlyMode) {
+        this._formulaInput.removeAttribute('name');
+        this._resultInput.removeAttribute('name');
+      } else {
+        this._formulaInput.setAttribute('name', `${sep}formula`);
+        this._resultInput.setAttribute('name', `${sep}result`);
+      }
     } else {
       this._mainInput.removeAttribute('name');
       this._formulaInput.removeAttribute('name');
@@ -638,7 +651,9 @@ export class FormulaInput extends HTMLElement {
   }
 
   _syncMainInputValue() {
-    this._mainInput.value = this.submit === 'result' ? this._result : this._formula;
+    const submitMode = this.submit;
+    const useResult = submitMode === 'result' || submitMode === 'result-only';
+    this._mainInput.value = useResult ? this._result : this._formula;
   }
 
   _showFormulaInput() {

@@ -73,7 +73,11 @@ export class FormulaInputDemoApp {
     const nameRow = document.createElement('div');
     nameRow.style.fontSize = '0.8rem';
     const nameCode = document.createElement('code');
-    nameCode.textContent = `name="${inputEl.getAttribute('name') ?? ''}"`;
+    if (inputEl.hasAttribute('name')) {
+      nameCode.textContent = `name="${inputEl.getAttribute('name')}"`;
+    } else {
+      nameCode.textContent = 'no name (not submitted)';
+    }
     nameRow.appendChild(nameCode);
 
     const valRow = document.createElement('div');

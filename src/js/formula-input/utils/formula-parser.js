@@ -65,16 +65,26 @@ export function normalizeSeparator(separator) {
   return String(separator);
 }
 
+export const VALID_SUBMIT_MODES = Object.freeze([
+  'formula',
+  'result',
+  'formula-only',
+  'result-only',
+]);
+
 /**
- * Normalizes the submit mode value ("formula" or "result").
+ * Normalizes the submit mode value ("formula", "result", "formula-only", or "result-only").
  * Defaults to "formula".
  *
  * @param {string|null|undefined} submit
- * @returns {'formula'|'result'}
+ * @returns {'formula'|'result'|'formula-only'|'result-only'}
  */
 export function normalizeSubmit(submit) {
-  if (typeof submit === 'string' && submit.trim().toLowerCase() === 'result') {
-    return 'result';
+  if (typeof submit === 'string') {
+    const normalized = submit.trim().toLowerCase();
+    if (VALID_SUBMIT_MODES.includes(normalized)) {
+      return normalized;
+    }
   }
   return DEFAULT_SUBMIT;
 }

@@ -237,7 +237,7 @@
                   <tr>
                     <td><code>submit</code></td>
                     <td><code>"formula"</code></td>
-                    <td>Configures what the primary <code>&lt;input type="text" name="&lt;name&gt;"&gt;</code> contains. Accepts <code>"formula"</code> or <code>"result"</code>.</td>
+                    <td>Configures what the primary <code>&lt;input type="text" name="&lt;name&gt;"&gt;</code> contains and whether the extra <code>--formula</code> and <code>--result</code> fields are submitted. Accepts <code>"formula"</code>, <code>"result"</code>, <code>"formula-only"</code>, or <code>"result-only"</code>. When set to <code>"formula-only"</code> or <code>"result-only"</code>, the <code>--formula</code> and <code>--result</code> fields are not submitted.</td>
                   </tr>
                   <tr>
                     <td><code>separator</code></td>
@@ -297,7 +297,7 @@ formula-input:has(input:invalid) {
 // Read formula, evaluated result, and configured submit value
 console.log(el.formula); // "2 + 3"
 console.log(el.result);  // "5"
-console.log(el.value);   // "2 + 3" (when submit="formula") or "5" (when submit="result")
+console.log(el.value);   // "2 + 3" (for "formula"/"formula-only") or "5" (for "result"/"result-only")
 console.log(el.isValid); // true
 
 // Inspect structured AST & tokens
@@ -350,7 +350,7 @@ console.log(el.checkValidity());</code></pre>
         <section id="example-form">
           <h2>2. Form Submission &amp; <code>submit</code> Attribute</h2>
           <p class="section-desc">
-            Compare default <code>submit="formula"</code> against <code>submit="result"</code> in a real <code>&lt;form&gt;</code>. Submitting inspects <code>new FormData(form)</code> showing all six submitted entries across both components. Try entering an invalid formula like <code>2 + </code> and clicking Submit to see native constraint validation prevent submission.
+            Compare <code>submit="formula"</code> (default), <code>submit="result"</code>, <code>submit="formula-only"</code>, and <code>submit="result-only"</code> in a real <code>&lt;form&gt;</code>. When <code>formula-only</code> or <code>result-only</code> is set, the extra <code>--formula</code> and <code>--result</code> fields are omitted from form submission.
           </p>
 
           <div class="card">
@@ -367,6 +367,20 @@ console.log(el.checkValidity());</code></pre>
                   Height (<code>name="height" submit="result"</code>)
                 </label>
                 <formula-input id="form-height" name="height" submit="result" value="(2 + 3) * 4"></formula-input>
+              </div>
+
+              <div>
+                <label for="form-depth" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
+                  Depth (<code>name="depth" submit="formula-only"</code> — omits <code>--formula</code> and <code>--result</code>)
+                </label>
+                <formula-input id="form-depth" name="depth" submit="formula-only" value="10 + 5"></formula-input>
+              </div>
+
+              <div>
+                <label for="form-area" style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
+                  Area (<code>name="area" submit="result-only"</code> — omits <code>--formula</code> and <code>--result</code>)
+                </label>
+                <formula-input id="form-area" name="area" submit="result-only" value="6 * 7"></formula-input>
               </div>
 
               <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -406,10 +420,12 @@ console.log(el.checkValidity());</code></pre>
                 <div class="syntax-config-header">
                   <strong>Submit Mode (<code>submit="..."</code>)</strong>
                 </div>
-                <p class="syntax-config-desc">Configure what the primary <code>name="price"</code> input holds:</p>
+                <p class="syntax-config-desc">Configure what the primary <code>name="price"</code> input holds and whether extra fields are submitted:</p>
                 <div class="syntax-chip-list" id="submit-chips">
                   <button type="button" class="syntax-chip is-active" data-submit="formula">submit="formula"</button>
                   <button type="button" class="syntax-chip" data-submit="result">submit="result"</button>
+                  <button type="button" class="syntax-chip" data-submit="formula-only">submit="formula-only"</button>
+                  <button type="button" class="syntax-chip" data-submit="result-only">submit="result-only"</button>
                 </div>
               </div>
             </div>

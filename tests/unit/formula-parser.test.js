@@ -39,10 +39,16 @@ describe('formula-parser unit tests', () => {
       assert.equal(normalizeSubmit('other'), 'formula');
     });
 
-    it('returns "result" when set to "result" (case-insensitive)', () => {
+    it('returns "result", "formula-only", and "result-only" (case-insensitive)', () => {
       assert.equal(normalizeSubmit('result'), 'result');
       assert.equal(normalizeSubmit('RESULT'), 'result');
       assert.equal(normalizeSubmit(' Result '), 'result');
+      assert.equal(normalizeSubmit('formula-only'), 'formula-only');
+      assert.equal(normalizeSubmit('FORMULA-ONLY'), 'formula-only');
+      assert.equal(normalizeSubmit(' formula-only '), 'formula-only');
+      assert.equal(normalizeSubmit('result-only'), 'result-only');
+      assert.equal(normalizeSubmit('RESULT-ONLY'), 'result-only');
+      assert.equal(normalizeSubmit(' result-only '), 'result-only');
     });
   });
 

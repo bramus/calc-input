@@ -200,25 +200,52 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     });
   });
 
-  it('supports configuring the primary input value via submit="formula" (default) and submit="result"', async () => {
+  it('supports configuring the primary input value and submitted fields via submit="formula" (default), "result", "formula-only", and "result-only"', async () => {
     const result = await page.evaluate(() => {
       const form = document.createElement('form');
       form.innerHTML = `
         <formula-input name="defaultSubmit" value="2 + 3"></formula-input>
         <formula-input name="explicitFormula" submit="formula" value="2 + 3"></formula-input>
         <formula-input name="explicitResult" submit="result" value="(2 + 3) * 4"></formula-input>
+        <formula-input name="formulaOnly" submit="formula-only" value="10 + 5"></formula-input>
+        <formula-input name="resultOnly" submit="result-only" value="6 * 7"></formula-input>
       `;
       document.body.appendChild(form);
 
       const fd = Object.fromEntries(new FormData(form).entries());
 
+      const formulaOnlyEl = form.querySelector('formula-input[name="formulaOnly"]');
+      const resultOnlyEl = form.querySelector('formula-input[name="resultOnly"]');
+      const formulaOnlyInputNames = Array.from(formulaOnlyEl.querySelectorAll('input')).map((i) =>
+        i.getAttribute('name')
+      );
+      const resultOnlyInputNames = Array.from(resultOnlyEl.querySelectorAll('input')).map((i) =>
+        i.getAttribute('name')
+      );
+
       // Also test dynamic switching of `submit` attribute
       const firstEl = form.querySelector('formula-input[name="defaultSubmit"]');
-      firstEl.setAttribute('submit', 'result');
-      const afterDynamicSwitch = firstEl.querySelector('input[name="defaultSubmit"]').value;
+      firstEl.setAttribute('submit', 'result-only');
+      const afterSwitchToResultOnly = {
+        value: firstEl.value,
+        names: Array.from(firstEl.querySelectorAll('input')).map((i) => i.getAttribute('name')),
+        fdKeys: Array.from(new FormData(form).keys()).filter((k) => k.startsWith('defaultSubmit')),
+      };
+
+      firstEl.setAttribute('submit', 'formula');
+      const afterSwitchBackToFormula = {
+        value: firstEl.value,
+        names: Array.from(firstEl.querySelectorAll('input')).map((i) => i.getAttribute('name')),
+      };
 
       form.remove();
-      return { fd, afterDynamicSwitch };
+      return {
+        fd,
+        formulaOnlyInputNames,
+        resultOnlyInputNames,
+        afterSwitchToResultOnly,
+        afterSwitchBackToFormula,
+      };
     });
 
     assert.deepEqual(result.fd, {
@@ -231,8 +258,20 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
       explicitResult: '20',
       'explicitResult--formula': '(2 + 3) * 4',
       'explicitResult--result': '20',
+      formulaOnly: '10 + 5',
+      resultOnly: '42',
     });
-    assert.equal(result.afterDynamicSwitch, '5');
+    assert.deepEqual(result.formulaOnlyInputNames, ['formulaOnly', null, null]);
+    assert.deepEqual(result.resultOnlyInputNames, ['resultOnly', null, null]);
+    assert.deepEqual(result.afterSwitchToResultOnly, {
+      value: '5',
+      names: ['defaultSubmit', null, null],
+      fdKeys: ['defaultSubmit'],
+    });
+    assert.deepEqual(result.afterSwitchBackToFormula, {
+      value: '2 + 3',
+      names: ['defaultSubmit', 'defaultSubmit--formula', 'defaultSubmit--result'],
+    });
   });
 
   it('supports configuring the separator via the separator attribute, including an empty string', async () => {
