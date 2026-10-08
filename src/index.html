@@ -51,11 +51,6 @@
       <p class="description">
         A custom input element that accepts mathematical formulas such as <code>2 + 3</code> or <code>(2 + 3) * 4</code>. Upon blurring, it displays the calculated result (e.g. <code>5</code> or <code>20</code>); upon re-focusing, it reveals the entered formula again. Under the hood, it maintains three synchronized <code>&lt;input type="text"&gt;</code> fields for effortless form submission.
       </p>
-
-      <div id="api-banner" class="api-banner supported">
-        <span class="api-banner-badge">Ready</span>
-        <span><strong>Zero-Eval Recursive Descent Parser + Native Form Validation:</strong> Formulas are safely tokenized and evaluated without <code>eval()</code>, while unparsable expressions trigger native <code>setCustomValidity()</code> and <code>:invalid</code> styling.</span>
-      </div>
     </header>
 
     <div class="page-layout">
