@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
+    "generate-screenshot": "node scripts/generate-screenshot.js",
     "prepublishOnly": "if [ -z $PUBLISH ]; then echo 'This package must be published using `npm run pub`\\n' && exit 1; fi",
     "pub": "PUBLISH=true npm run build && npm publish ./dist",
     "start": "npx -y serve src",
