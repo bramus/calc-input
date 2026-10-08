@@ -57,39 +57,6 @@ formula-input:not(:defined) {
   color: var(--text-muted);
 }
 
-/*
- * ==========================================================================
- * CUSTOM THEMING EXAMPLES
- * Demonstrating custom styling via CSS variables and selectors
- * ==========================================================================
- */
-formula-input.theme-pill {
-  --fi-input-radius: 9999px;
-  --fi-input-padding: 0.625rem 1.25rem;
-  --fi-input-border: #3b82f6;
-  --fi-primary: #1d4ed8;
-}
-
-formula-input.theme-terminal {
-  --fi-input-bg: #0f172a;
-  --fi-input-color: #4ade80;
-  --fi-input-border: #22c55e;
-  --fi-input-radius: 4px;
-  --fi-primary: #22c55e;
-  --fi-focus-ring: rgba(34, 197, 94, 0.25);
-  --fi-placeholder-color: #16a34a;
-  font-family: var(--font-mono);
-}
-
-formula-input.theme-spreadsheet {
-  --fi-input-bg: #ffffff;
-  --fi-input-border: #10b981;
-  --fi-input-radius: 2px;
-  --fi-primary: #059669;
-  --fi-focus-ring: rgba(16, 185, 129, 0.2);
-  font-family: var(--font-mono);
-}
-
 /* Container */
 .container {
   max-width: 1320px;

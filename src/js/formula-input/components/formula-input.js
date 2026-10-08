@@ -17,9 +17,15 @@ const STYLE_ID = 'formula-input-default-styles';
 
 const DEFAULT_CSS = `
   formula-input {
-    display: inline-block;
-    position: relative;
+    display: contents;
     font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 0.625rem 0.75rem;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -29,55 +35,55 @@ const DEFAULT_CSS = `
     display: none !important;
   }
 
-  formula-input *,
-  formula-input *::before,
-  formula-input *::after {
-    box-sizing: border-box;
+  formula-input:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+
+  formula-input[disabled] {
+    background-color: #f3f4f6;
+    border-color: #e5e7eb;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  formula-input:has(input:invalid),
+  formula-input[data-invalid],
+  formula-input input:invalid {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+
+  formula-input:has(input:invalid):focus-within,
+  formula-input[data-invalid]:focus-within,
+  formula-input input:invalid:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
   }
 
   formula-input input {
     display: block;
-    width: 100%;
+    width: inherit;
     min-width: 0;
-    font-family: inherit;
-    font-size: var(--fi-font-size, 0.95rem);
-    line-height: 1.5;
-    padding: var(--fi-input-padding, 0.625rem 0.75rem);
-    color: var(--fi-input-color, #111827);
-    background-color: var(--fi-input-bg, #ffffff);
-    border: 1px solid var(--fi-input-border, #d1d5db);
-    border-radius: var(--fi-input-radius, 8px);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    padding: inherit;
+    margin: inherit;
+    color: inherit;
+    background: inherit;
+    border: inherit;
+    border-radius: inherit;
+    box-shadow: inherit;
+    opacity: inherit;
+    cursor: inherit;
+    box-sizing: inherit;
     outline: none;
     transition: box-shadow 0.15s ease;
   }
 
   formula-input input::placeholder {
-    color: var(--fi-placeholder-color, #9ca3af);
-  }
-
-  formula-input input:focus {
-    border-color: var(--fi-primary, #2563eb);
-    box-shadow: 0 0 0 3px var(--fi-focus-ring, rgba(37, 99, 235, 0.2));
-  }
-
-  formula-input[disabled] input,
-  formula-input input:disabled {
-    background-color: var(--fi-disabled-bg, #f3f4f6);
-    border-color: var(--fi-disabled-border, #e5e7eb);
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  formula-input input:invalid,
-  formula-input[data-invalid] input {
-    border-color: var(--fi-invalid-color, #ef4444);
-    background-color: var(--fi-invalid-bg, #fef2f2);
-  }
-
-  formula-input input:invalid:focus,
-  formula-input[data-invalid] input:focus {
-    border-color: var(--fi-invalid-color, #ef4444);
-    box-shadow: 0 0 0 3px var(--fi-invalid-ring, rgba(239, 68, 68, 0.2));
+    color: #9ca3af;
   }
 `;
 

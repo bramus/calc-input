@@ -418,9 +418,9 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(result.noAttrHostHasValueAttr, false);
   });
 
-  it('supports real mouse clicks, keyboard typing, and form reset', async () => {
-    // Click on #demo-formula on the demo page, clear, type a new formula, and click outside to blur
-    await page.click('#demo-formula');
+  it('supports real mouse clicks, keyboard typing, form reset, and direct CSS inheritance from <formula-input> to inner inputs', async () => {
+    // Click on the visible input inside #demo-formula, clear, type a new formula, and click outside to blur
+    await page.click('#demo-formula input:not([hidden])');
 
     const focusedState = await page.evaluate(() => {
       const el = document.querySelector('#demo-formula');
@@ -462,6 +462,22 @@ describe('<formula-input> End-to-End Browser Tests (Puppeteer + WebDriver BiDi)'
     assert.equal(blurredState.formulaValue, '(10 + 2) / 3');
     assert.equal(blurredState.resultValue, '4');
     assert.equal(blurredState.domValueAttr, '(2 + 3) * 4');
+
+    // Test that styles applied directly onto <formula-input> apply to the <input> elements inside it
+    const inheritedStyles = await page.evaluate(() => {
+      const styledEl = document.querySelector('formula-input[name="custom_border"]');
+      const styledInput = styledEl.querySelector('input:not([hidden])');
+      const cs = getComputedStyle(styledInput);
+      return {
+        hostDisplay: getComputedStyle(styledEl).display,
+        borderColor: cs.borderColor,
+        borderRadius: cs.borderRadius,
+      };
+    });
+
+    assert.equal(inheritedStyles.hostDisplay, 'contents');
+    assert.equal(inheritedStyles.borderColor, 'rgb(59, 130, 246)');
+    assert.equal(inheritedStyles.borderRadius, '9999px');
 
     // Test form reset restores initial value attribute
     const resetState = await page.evaluate(async () => {

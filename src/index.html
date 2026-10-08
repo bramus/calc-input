@@ -76,7 +76,7 @@
             <li><a href="#example-form">2. Form Submission &amp; submit</a></li>
             <li><a href="#example-separator">3. Custom separator</a></li>
             <li><a href="#example-validation">4. Invalid Formula Handling</a></li>
-            <li><a href="#example-themes">5. Custom Themes</a></li>
+            <li><a href="#example-themes">5. Custom Styling</a></li>
           </ul>
         </nav>
       </aside>
@@ -267,18 +267,26 @@
 
         <!-- Validation Section -->
         <section id="validation">
-          <h2>Validation &amp; Invalid Formula Styling</h2>
+          <h2>Validation &amp; Direct CSS Styling</h2>
           <p class="section-desc">
-            When an unparsable formula is entered (such as <code>2 + </code> or <code>(2 + 3</code>), blurring the field keeps showing the original formula instead of switching to the result input, applies invalid styling (red border), and sets custom validity via <code>setCustomValidity()</code> to prevent form submission.
+            When an unparsable formula is entered (such as <code>2 + </code> or <code>(2 + 3</code>), blurring the field keeps showing the original formula instead of switching to the result input, applies invalid styling (red border), and sets custom validity via <code>setCustomValidity()</code> to prevent form submission. Because <code>&lt;formula-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography properties (<code>border: inherit</code>, <code>padding: inherit</code>, <code>background: inherit</code>, <code>border-radius: inherit</code>, etc.), any styles applied directly onto <code>&lt;formula-input&gt;</code> automatically apply to the inputs inside it.
           </p>
           <div class="card">
             <micro-lighter language="css" controls="copy">
-              <pre><code>/* Customize invalid and focus appearance using CSS Custom Properties */
+              <pre><code>/* Styles applied directly onto formula-input are inherited by its inner inputs */
 formula-input {
-  --fi-input-border: #d1d5db;
-  --fi-primary: #2563eb;
-  --fi-invalid-color: #ef4444;
-  --fi-invalid-bg: #fef2f2;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+}
+
+formula-input:focus-within {
+  border-color: #2563eb;
+}
+
+formula-input:has(input:invalid) {
+  border-color: #ef4444;
+  background-color: #fef2f2;
 }</code></pre>
             </micro-lighter>
           </div>
@@ -438,28 +446,71 @@ console.log(el.checkValidity());</code></pre>
           </div>
         </section>
 
-        <!-- Example 5: Custom Themes -->
+        <!-- Example 5: Styling Options -->
         <section id="example-themes">
-          <h2>5. Custom Styling &amp; Themes</h2>
+          <h2>5. Custom Styling</h2>
           <p class="section-desc">
-            Customize <code>&lt;formula-input&gt;</code> using CSS custom properties (<code>--fi-*</code>) or standard CSS selectors.
+            Because <code>&lt;formula-input&gt;</code> uses <code>display: contents</code> and its inner <code>&lt;input&gt;</code> elements inherit box and typography styles, you can apply CSS properties directly onto <code>&lt;formula-input&gt;</code> and they automatically apply to the inputs inside it.
           </p>
 
           <div class="card">
-            <div style="display: grid; gap: 1.25rem;">
-              <div>
-                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Pill Theme (<code>.theme-pill</code>)</label>
-                <formula-input class="theme-pill" name="theme_pill" value="12 * 12" aria-label="Pill theme formula input"></formula-input>
-              </div>
-              <div>
-                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Terminal Theme (<code>.theme-terminal</code>)</label>
-                <formula-input class="theme-terminal" name="theme_terminal" value="(1024 / 16) * 8" aria-label="Terminal theme formula input"></formula-input>
-              </div>
-              <div>
-                <label style="display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">Spreadsheet Cell Theme (<code>.theme-spreadsheet</code>)</label>
-                <formula-input class="theme-spreadsheet" name="theme_sheet" value="(250 + 750) * 1.21" aria-label="Spreadsheet theme formula input"></formula-input>
-              </div>
+            <div class="card-header">
+              <span class="card-title">Custom Border, Radius &amp; Padding</span>
+              <span class="card-meta">Direct Inline Styles</span>
             </div>
+            <formula-input
+              name="custom_border"
+              value="12 * 12"
+              aria-label="Custom border and radius formula input"
+              style="border: 2px solid #3b82f6; border-radius: 9999px; padding: 0.625rem 1.25rem;"
+            ></formula-input>
+            <micro-lighter language="html" controls="copy">
+              <pre><code>&lt;formula-input
+  name="custom_border"
+  value="12 * 12"
+  style="border: 2px solid #3b82f6; border-radius: 9999px; padding: 0.625rem 1.25rem;"
+&gt;&lt;/formula-input&gt;</code></pre>
+            </micro-lighter>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Custom Background, Color &amp; Monospace Font</span>
+              <span class="card-meta">Direct Inline Styles</span>
+            </div>
+            <formula-input
+              name="custom_colors"
+              value="(1024 / 16) * 8"
+              aria-label="Custom background and color formula input"
+              style="background-color: #0f172a; color: #4ade80; border: 1px solid #22c55e; border-radius: 4px; font-family: monospace;"
+            ></formula-input>
+            <micro-lighter language="html" controls="copy">
+              <pre><code>&lt;formula-input
+  name="custom_colors"
+  value="(1024 / 16) * 8"
+  style="background-color: #0f172a; color: #4ade80; border: 1px solid #22c55e; border-radius: 4px; font-family: monospace;"
+&gt;&lt;/formula-input&gt;</code></pre>
+            </micro-lighter>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Custom Typography, Alignment &amp; Width</span>
+              <span class="card-meta">Direct Inline Styles</span>
+            </div>
+            <formula-input
+              name="custom_typography"
+              value="(250 + 750) * 1.21"
+              aria-label="Custom typography and alignment formula input"
+              style="font-size: 1.25rem; font-weight: 700; text-align: right; width: 240px; border: 2px solid #059669; border-radius: 2px; font-family: monospace;"
+            ></formula-input>
+            <micro-lighter language="html" controls="copy">
+              <pre><code>&lt;formula-input
+  name="custom_typography"
+  value="(250 + 750) * 1.21"
+  style="font-size: 1.25rem; font-weight: 700; text-align: right; width: 240px; border: 2px solid #059669; border-radius: 2px; font-family: monospace;"
+&gt;&lt;/formula-input&gt;</code></pre>
+            </micro-lighter>
           </div>
         </section>
       </main>
